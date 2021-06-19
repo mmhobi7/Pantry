@@ -1158,16 +1158,16 @@ class _ReplyFabState extends State<_ReplyFab>
           fillColor: Colors.transparent,
           child: onMailView
               ? Icon(
-                  Icons.reply_all,
+                  Icons.edit,
                   key: fabKey,
                   color: Colors.black,
                 )
               : const Icon(
-                  Icons.create,
+                  Icons.add,
                   color: Colors.black,
                 ),
         );
-        final tooltip = onMailView ? 'Reply' : 'Compose';
+        final tooltip = onMailView ? 'Edit' : 'Add Item';
 
         if (isDesktop) {
           final animation = NavigationRail.extendedAnimation(context);
