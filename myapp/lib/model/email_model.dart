@@ -13,6 +13,7 @@ class Email {
     this.avatar,
     this.recipients,
     this.containsPictures,
+    this.type,
   });
 
   @HiveField(0)
@@ -31,6 +32,8 @@ class Email {
   final String recipients;
   @HiveField(7)
   final bool containsPictures;
+  @HiveField(8)
+  final List<String> type;
 }
 
 @HiveType(typeId : 2)
@@ -52,6 +55,8 @@ class InboxEmail extends Email {
     String recipients,
     @HiveField(7)
     bool containsPictures,
+    @HiveField(8)
+    List<String> type,
     this.inboxType = InboxType.normal,
   }) : super(
           id: id,
@@ -62,6 +67,7 @@ class InboxEmail extends Email {
           avatar: avatar,
           recipients: recipients,
           containsPictures: containsPictures,
+          type: type,
         );
 
   InboxType inboxType;

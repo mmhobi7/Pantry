@@ -1,31 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart';
 import 'model/email_model.dart';
 import 'app.dart';
 
 const _avatarsLocation = 'reply/avatars';
 
-const hiveDB = 'nalininoa';
-const List<String> books = [
-  'Harry Potter',
-  'To Kill a Mockingbird',
-  'The Hunger Games',
-  'The Giver',
-  'Brave New World',
-  'Unwind',
-  'World War Z',
-  'The Lord of the Rings',
-  'The Hobbit',
-  'Moby Dick',
-  'War and Peace',
-  'Crime and Punishment',
-  'The Adventures of Huckleberry Finn',
-  'Catch-22',
-  'The Sound and the Fury',
-  'The Grapes of Wrath',
-  'Heart of Darkness',
-];
+const hiveDB = 'bruh';
 
 final _inbox = <Email>[
   InboxEmail(
@@ -39,6 +21,7 @@ final _inbox = <Email>[
     avatar: '$_avatarsLocation/avatar_express.png',
     recipients: 'Jeff',
     containsPictures: false,
+    type: ["inbox"],
   ),
   InboxEmail(
     id: 2,
@@ -53,6 +36,7 @@ final _inbox = <Email>[
     avatar: '$_avatarsLocation/avatar_5.jpg',
     recipients: 'Jeff',
     containsPictures: false,
+    type: ["inbox"],
   ),
   InboxEmail(
     id: 3,
@@ -63,6 +47,7 @@ final _inbox = <Email>[
     avatar: '$_avatarsLocation/avatar_3.jpg',
     recipients: 'Jeff',
     containsPictures: true,
+    type: ["inbox"],
   ),
   InboxEmail(
     id: 4,
@@ -80,6 +65,7 @@ final _inbox = <Email>[
     avatar: '$_avatarsLocation/avatar_8.jpg',
     recipients: 'Allison, Kim, Jeff',
     containsPictures: false,
+    type: ["inbox"],
   ),
   InboxEmail(
     id: 5,
@@ -90,6 +76,7 @@ final _inbox = <Email>[
     avatar: '$_avatarsLocation/avatar_4.jpg',
     recipients: 'Jeff',
     containsPictures: false,
+    type: ["inbox"],
   ),
   InboxEmail(
     id: 6,
@@ -100,6 +87,7 @@ final _inbox = <Email>[
     avatar: '$_avatarsLocation/avatar_express.png',
     recipients: 'Jeff',
     containsPictures: false,
+    type: ["inbox"],
   ),
   InboxEmail(
     id: 7,
@@ -112,6 +100,7 @@ final _inbox = <Email>[
     avatar: '$_avatarsLocation/avatar_4.jpg',
     recipients: 'Jeff',
     containsPictures: false,
+    type: ["inbox"],
   ),
   InboxEmail(
     id: 8,
@@ -124,6 +113,7 @@ final _inbox = <Email>[
     avatar: '$_avatarsLocation/avatar_3.jpg',
     recipients: 'Jeff',
     containsPictures: false,
+    type: ["inbox"],
   ),
   InboxEmail(
     id: 9,
@@ -135,20 +125,91 @@ final _inbox = <Email>[
     avatar: '$_avatarsLocation/avatar_3.jpg',
     recipients: 'Jeff',
     containsPictures: false,
+    type: ["inbox"],
     inboxType: InboxType.spam,
   ),
 ];
 
+final _outbox = <Email>[
+  InboxEmail(
+    id: 10,
+    sender: 'Kim Alen',
+    time: '4 hrs ago',
+    subject: 'High school reunion?',
+    message:
+    'Hi friends,\n\nI was at the grocery store on Sunday night.. when I ran into Genie Williams! I almost didn\'t recognize her afer 20 years!\n\n'
+        'Anyway, it turns out she is on the organizing committee for the high school reunion this fall. I don\'t know if you were planning on going or not, but she could definitely use our help in trying to track down lots of missing alums. '
+        'If you can make it, we\'re doing a little phone-tree party at her place next Saturday, hoping that if we can find one person, thee more will...',
+    avatar: '$_avatarsLocation/avatar_7.jpg',
+    recipients: 'Jeff',
+    containsPictures: false,
+    type: ["outbox"],
+  ),
+  InboxEmail(
+    id: 11,
+    sender: 'Sandra Adams',
+    time: '7 hrs ago',
+    subject: 'Recipe to try',
+    message:
+    'Raspberry Pie: We should make this pie recipe tonight! The filling is '
+        'very quick to put together.',
+    avatar: '$_avatarsLocation/avatar_2.jpg',
+    recipients: 'Jeff',
+    containsPictures: false,
+    type: ["outbox", "inbox", "drafts"],
+  ),
+];
+
+final _drafts = <Email>[
+  InboxEmail(
+    id: 12,
+    sender: 'Sandra Adams',
+    time: '2 hrs ago',
+    subject: '(No subject)',
+    message: 'Hey,\n\n'
+        'Wanted to email and see what you thought of',
+    avatar: '$_avatarsLocation/avatar_2.jpg',
+    recipients: 'Jeff',
+    containsPictures: false,
+    type: ["drafts"],
+  ),
+];
+
+Future<void> _deleteCacheDir() async {
+  final cacheDir = await getTemporaryDirectory();
+
+  if (cacheDir.existsSync()) {
+    cacheDir.deleteSync(recursive: true);
+  }
+}
+
+Future<void> _deleteAppDir() async {
+  final appDir = await getApplicationSupportDirectory();
+
+  if(appDir.existsSync()){
+    appDir.deleteSync(recursive: true);
+  }
+}
+
+
 void main() async {
+  await _deleteAppDir();
+  // await _deleteCacheDir();
   await Hive.initFlutter();
-  await Hive.openBox<Email>(hiveDB);
   Hive.registerAdapter(InboxTypeAdapter());
   Hive.registerAdapter(InboxEmailAdapter());
   Hive.registerAdapter(MailboxPageTypeAdapter());
   Hive.registerAdapter(EmailAdapter());
+  await Hive.openBox<Email>(hiveDB);
   Box<Email> favoriteBooksBox = Hive.box(hiveDB);
   if (favoriteBooksBox.isEmpty) {
     _inbox.forEach((Email email) {
+      favoriteBooksBox.put(email.id, email);
+    });
+    _outbox.forEach((Email email) {
+      favoriteBooksBox.put(email.id, email);
+    });
+    _drafts.forEach((Email email) {
       favoriteBooksBox.put(email.id, email);
     });
   }

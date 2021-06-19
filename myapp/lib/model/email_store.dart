@@ -4,57 +4,24 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'email_model.dart';
 
 const _avatarsLocation = 'reply/avatars';
-const hiveDB = 'nalininoa';
+const hiveDB = 'bruh';
 
 class EmailStore with ChangeNotifier {
 
   Box<Email> userBox = Hive.box(hiveDB);
   Iterable<Email> _inbox;
+  Iterable<Email> _outbox;
+  Iterable<Email> _drafts;
 
-  static final _outbox = <Email>[
-    Email(
-      id: 10,
-      sender: 'Kim Alen',
-      time: '4 hrs ago',
-      subject: 'High school reunion?',
-      message:
-          'Hi friends,\n\nI was at the grocery store on Sunday night.. when I ran into Genie Williams! I almost didn\'t recognize her afer 20 years!\n\n'
-          'Anyway, it turns out she is on the organizing committee for the high school reunion this fall. I don\'t know if you were planning on going or not, but she could definitely use our help in trying to track down lots of missing alums. '
-          'If you can make it, we\'re doing a little phone-tree party at her place next Saturday, hoping that if we can find one person, thee more will...',
-      avatar: '$_avatarsLocation/avatar_7.jpg',
-      recipients: 'Jeff',
-      containsPictures: false,
-    ),
-    Email(
-      id: 12,
-      sender: 'Sandra Adams',
-      time: '7 hrs ago',
-      subject: 'Recipe to try',
-      message:
-          'Raspberry Pie: We should make this pie recipe tonight! The filling is '
-          'very quick to put together.',
-      avatar: '$_avatarsLocation/avatar_2.jpg',
-      recipients: 'Jeff',
-      containsPictures: false,
-    ),
-  ];
 
-  static final _drafts = <Email>[
-    Email(
-      id: 12,
-      sender: 'Sandra Adams',
-      time: '2 hrs ago',
-      subject: '(No subject)',
-      message: 'Hey,\n\n'
-          'Wanted to email and see what you thought of',
-      avatar: '$_avatarsLocation/avatar_2.jpg',
-      recipients: 'Jeff',
-      containsPictures: false,
-    ),
-  ];
 
   List<Email> get _allEmails {
-    _inbox=userBox.values.where((email) => email.id.isFinite);
+    _inbox=userBox.values.where((email) => email.type.contains("inbox"));
+    _inbox.forEach((Email email) {
+      print(email.id);
+    });
+    _outbox=userBox.values.where((email) => email.type.contains("outbox"));
+    _drafts=userBox.values.where((email) => email.type.contains("drafts"));
     return [
         ..._inbox,
         ..._outbox,
@@ -63,17 +30,26 @@ class EmailStore with ChangeNotifier {
   }
 
   List<Email> get inboxEmails {
-    _inbox=userBox.values.where((email) => email.id.isFinite);
+    _inbox=userBox.values.where((email) => email.type.contains("inbox"));
+    print("a===");
+    _inbox.forEach((Email email) {
+      print(email.id);
+    });
+    print("b===");
     return _inbox.where((email) {
       if (email is InboxEmail) {
-        return email.inboxType == InboxType.normal &&
-            !trashEmailIds.contains(email.id);
+        print(email.id);
+        print(email.inboxType);
+        return email.inboxType == InboxType.normal;
       }
+      print("f: ");
+      print(email.id);
       return false;
     }).toList();
   }
 
   List<Email> get spamEmails {
+    _inbox=userBox.values.where((email) => email.type.contains("inbox"));
     return _inbox.where((email) {
       if (email is InboxEmail) {
         return email.inboxType == InboxType.spam &&
@@ -86,11 +62,15 @@ class EmailStore with ChangeNotifier {
   Email get currentEmail =>
       _allEmails.firstWhere((email) => email.id == _selectedEmailId);
 
-  List<Email> get outboxEmails =>
-      _outbox.where((email) => !trashEmailIds.contains(email.id)).toList();
+  List<Email> get outboxEmails {
+    _outbox=userBox.values.where((email) => email.type.contains("outbox"));
+    return _outbox.where((email) => !trashEmailIds.contains(email.id)).toList();
+  }
 
-  List<Email> get draftEmails =>
-      _drafts.where((email) => !trashEmailIds.contains(email.id)).toList();
+  List<Email> get draftEmails {
+    _drafts=userBox.values.where((email) => email.type.contains("drafts"));
+    return _drafts.where((email) => !trashEmailIds.contains(email.id)).toList();
+  }
 
   Set<int> starredEmailIds = {};
   bool isEmailStarred(int id) =>
@@ -121,7 +101,8 @@ class EmailStore with ChangeNotifier {
   }
 
   void deleteEmail(int id) {
-    trashEmailIds.add(id);
+    // trashEmailIds.add(id);
+    userBox.delete(id);
     notifyListeners();
   }
 

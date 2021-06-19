@@ -123,13 +123,14 @@ class EmailAdapter extends TypeAdapter<Email> {
       avatar: fields[5] as String,
       recipients: fields[6] as String,
       containsPictures: fields[7] as bool,
+      type: (fields[8] as List)?.cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Email obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -145,7 +146,9 @@ class EmailAdapter extends TypeAdapter<Email> {
       ..writeByte(6)
       ..write(obj.recipients)
       ..writeByte(7)
-      ..write(obj.containsPictures);
+      ..write(obj.containsPictures)
+      ..writeByte(8)
+      ..write(obj.type);
   }
 
   @override
@@ -178,13 +181,14 @@ class InboxEmailAdapter extends TypeAdapter<InboxEmail> {
       avatar: fields[5] as String,
       recipients: fields[6] as String,
       containsPictures: fields[7] as bool,
+      type: (fields[8] as List)?.cast<String>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, InboxEmail obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -200,7 +204,9 @@ class InboxEmailAdapter extends TypeAdapter<InboxEmail> {
       ..writeByte(6)
       ..write(obj.recipients)
       ..writeByte(7)
-      ..write(obj.containsPictures);
+      ..write(obj.containsPictures)
+      ..writeByte(8)
+      ..write(obj.type);
   }
 
   @override
