@@ -8,6 +8,7 @@ import 'model/email_model.dart';
 import 'model/email_store.dart';
 import 'profile_avatar.dart';
 import 'package:provider/provider.dart';
+import 'package:jiffy/jiffy.dart';
 
 const _assetsPackage = 'flutter_gallery_assets';
 const _iconAssetLocation = 'reply/icons';
@@ -214,7 +215,7 @@ class _MailPreview extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              '${email.sender} - '+DateFormat('yyyy-MM-dd').format(email.time),
+                              '${email.sender} - '+Jiffy(email.time).fromNow(),
                               style: textTheme.caption,
                             ),
                             const SizedBox(height: 4),
