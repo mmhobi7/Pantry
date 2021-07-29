@@ -117,7 +117,7 @@ class EmailAdapter extends TypeAdapter<Email> {
     return Email(
       id: fields[0] as int,
       sender: fields[1] as String,
-      time: fields[2] as String,
+      time: fields[2] as DateTime,
       subject: fields[3] as String,
       message: fields[4] as String,
       avatar: fields[5] as String,
@@ -175,7 +175,7 @@ class InboxEmailAdapter extends TypeAdapter<InboxEmail> {
     return InboxEmail(
       id: fields[0] as int,
       sender: fields[1] as String,
-      time: fields[2] as String,
+      time: fields[2] as DateTime,
       subject: fields[3] as String,
       message: fields[4] as String,
       avatar: fields[5] as String,

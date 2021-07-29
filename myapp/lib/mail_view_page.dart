@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'model/email_model.dart';
 import 'model/email_store.dart';
 import 'profile_avatar.dart';
@@ -94,7 +95,7 @@ class _MailViewHeader extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text('${email.sender} - ${email.time}'),
+                Text('${email.sender} - '+ DateFormat('yyyy-MM-dd').format(email.time)),
                 const SizedBox(height: 4),
                 Text(
                   'To ${email.recipients},',

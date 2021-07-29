@@ -7,13 +7,13 @@ import 'app.dart';
 
 const _avatarsLocation = 'reply/avatars';
 
-const hiveDB = 'bruh';
+const hiveDB = 'bruhb';
 
 final _inbox = <Email>[
   InboxEmail(
     id: 1,
     sender: 'Google Express',
-    time: '15 minutes ago',
+    time: DateTime.now(),
     subject: 'Package shipped!',
     message: 'Cucumber Mask Facial has shipped.\n\n'
         'Keep an eye out for a package to arrive between this Thursday and next Tuesday. If for any reason you don\'t receive your package before the end of next week, please reach out to us for details on your shipment.\n\n'
@@ -26,7 +26,7 @@ final _inbox = <Email>[
   InboxEmail(
     id: 2,
     sender: 'Ali Connors',
-    time: '4 hrs ago',
+    time: DateTime.now(),
     subject: 'Brunch this weekend?',
     message:
         'I\'ll be in your neighborhood doing errands and was hoping to catch you for a coffee this Saturday. If you don\'t have anything scheduled, it would be great to see you! It feels like its been forever.\n\n'
@@ -41,7 +41,7 @@ final _inbox = <Email>[
   InboxEmail(
     id: 3,
     sender: 'Allison Trabucco',
-    time: '5 hrs ago',
+    time: DateTime.now(),
     subject: 'Bonjour from Paris',
     message: 'Here are some great shots from my trip...',
     avatar: '$_avatarsLocation/avatar_3.jpg',
@@ -52,7 +52,7 @@ final _inbox = <Email>[
   InboxEmail(
     id: 4,
     sender: 'Trevor Hansen',
-    time: '9 hrs ago',
+    time: DateTime.now(),
     subject: 'Brazil trip',
     message:
         'Thought we might be able to go over some details about our upcoming vacation.\n\n'
@@ -70,7 +70,7 @@ final _inbox = <Email>[
   InboxEmail(
     id: 5,
     sender: 'Frank Hawkins',
-    time: '10 hrs ago',
+    time: DateTime.now(),
     subject: 'Update to Your Itinerary',
     message: '',
     avatar: '$_avatarsLocation/avatar_4.jpg',
@@ -81,7 +81,7 @@ final _inbox = <Email>[
   InboxEmail(
     id: 6,
     sender: 'Google Express',
-    time: '12 hrs ago',
+    time: DateTime.now(),
     subject: 'Delivered',
     message: 'Your shoes should be waiting for you at home!',
     avatar: '$_avatarsLocation/avatar_express.png',
@@ -92,7 +92,7 @@ final _inbox = <Email>[
   InboxEmail(
     id: 7,
     sender: 'Frank Hawkins',
-    time: '4 hrs ago',
+    time: DateTime.now(),
     subject: 'Your update on the Google Play Store is live!',
     message:
         'Your update is now live on the Play Store and available for your alpha users to start testing.\n\n'
@@ -105,7 +105,7 @@ final _inbox = <Email>[
   InboxEmail(
     id: 8,
     sender: 'Allison Trabucco',
-    time: '6 hrs ago',
+    time: DateTime.now(),
     subject: 'Try a free TrailGo account',
     message:
         'Looking for the best hiking trails in your area? TrailGo gets you on the path to the outdoors faster than you can pack a sandwich.\n\n'
@@ -118,7 +118,7 @@ final _inbox = <Email>[
   InboxEmail(
     id: 9,
     sender: 'Allison Trabucco',
-    time: '4 hrs ago',
+    time: DateTime.now(),
     subject: 'Free money',
     message:
         'You\'ve been selected as a winner in our latest raffle! To claim your prize, click on the link.',
@@ -134,7 +134,7 @@ final _outbox = <Email>[
   InboxEmail(
     id: 10,
     sender: 'Kim Alen',
-    time: '4 hrs ago',
+    time: DateTime.now(),
     subject: 'High school reunion?',
     message:
     'Hi friends,\n\nI was at the grocery store on Sunday night.. when I ran into Genie Williams! I almost didn\'t recognize her afer 20 years!\n\n'
@@ -148,7 +148,7 @@ final _outbox = <Email>[
   InboxEmail(
     id: 11,
     sender: 'Sandra Adams',
-    time: '7 hrs ago',
+    time: DateTime.now(),
     subject: 'Recipe to try',
     message:
     'Raspberry Pie: We should make this pie recipe tonight! The filling is '
@@ -164,7 +164,7 @@ final _drafts = <Email>[
   InboxEmail(
     id: 12,
     sender: 'Sandra Adams',
-    time: '2 hrs ago',
+    time: DateTime.now(),
     subject: '(No subject)',
     message: 'Hey,\n\n'
         'Wanted to email and see what you thought of',
