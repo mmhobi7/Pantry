@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'adaptive.dart';
 import 'colors.dart';
 import 'mail_view_page.dart';
@@ -213,7 +214,7 @@ class _MailPreview extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              '${email.sender} - ${email.time}',
+                              '${email.sender} - '+DateFormat('yyyy-MM-dd').format(email.time),
                               style: textTheme.caption,
                             ),
                             const SizedBox(height: 4),

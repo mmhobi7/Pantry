@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'email_model.dart';
 
 const _avatarsLocation = 'reply/avatars';
-const hiveDB = 'bruh';
+const hiveDB = 'bruhb';
 
 class EmailStore with ChangeNotifier {
 
@@ -17,9 +17,6 @@ class EmailStore with ChangeNotifier {
 
   List<Email> get _allEmails {
     _inbox=userBox.values.where((email) => email.type.contains("inbox"));
-    _inbox.forEach((Email email) {
-      print(email.id);
-    });
     _outbox=userBox.values.where((email) => email.type.contains("outbox"));
     _drafts=userBox.values.where((email) => email.type.contains("drafts"));
     return [
@@ -31,19 +28,10 @@ class EmailStore with ChangeNotifier {
 
   List<Email> get inboxEmails {
     _inbox=userBox.values.where((email) => email.type.contains("inbox"));
-    print("a===");
-    _inbox.forEach((Email email) {
-      print(email.id);
-    });
-    print("b===");
     return _inbox.where((email) {
       if (email is InboxEmail) {
-        print(email.id);
-        print(email.inboxType);
         return email.inboxType == InboxType.normal;
       }
-      print("f: ");
-      print(email.id);
       return false;
     }).toList();
   }
@@ -104,6 +92,13 @@ class EmailStore with ChangeNotifier {
     // trashEmailIds.add(id);
     userBox.delete(id);
     notifyListeners();
+  }
+
+  void addItem(InboxEmail item){
+    // var last = userBox.values.where((email) => email.type.contains("outbox")).;
+    print("niggg");
+    print(item.subject);
+    userBox.add(item);
   }
 
   int _selectedEmailId = -1;

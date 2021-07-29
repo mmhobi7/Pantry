@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'model/email_model.dart';
 import 'model/email_store.dart';
 import 'package:provider/provider.dart';
+
+const _avatarsLocation = 'reply/avatars';
 
 class ComposePage extends StatelessWidget {
   const ComposePage({Key key}) : super(key: key);
@@ -95,6 +98,7 @@ class _SubjectRowState extends State<_SubjectRow> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final emailStore = Provider.of<EmailStore>(context);
 
     return Padding(
       padding: const EdgeInsets.only(top: 8),
@@ -124,7 +128,22 @@ class _SubjectRowState extends State<_SubjectRow> {
             ),
           ),
           IconButton(
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () {
+              emailStore.addItem(InboxEmail(
+                id: 0,
+                sender: 'dExpress',
+                time: DateTime.now(),
+                subject: _subjectController.text,
+                message: 'Cucumber Mjjjask Facial has shipped.\n\n'
+                    'Keep an eye out for a package to arrive between this Thursday and next Tuesday. If for any reason you don\'t receive your package before the end of next week, please reach out to us for details on your shipment.\n\n'
+                    'As always, thank you for shopping with us and we hope you love our specially formulated Cucumber Mask!',
+                avatar: '$_avatarsLocation/avatar_express.png',
+                recipients: 'Jeff',
+                containsPictures: false,
+                type: ["inbox"],
+              ));
+              Navigator.of(context).pop();
+            },
             icon: IconButton(
               icon: ImageIcon(
                 const AssetImage(
@@ -133,7 +152,22 @@ class _SubjectRowState extends State<_SubjectRow> {
                 ),
                 color: colorScheme.onSurface,
               ),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                emailStore.addItem(InboxEmail(
+                  id: 0,
+                  sender: 'dExpress',
+                  time: DateTime.now(),
+                  subject: _subjectController.text,
+                  message: 'Cucumber Mjjjask Facial has shipped.\n\n'
+                      'Keep an eye out for a package to arrive between this Thursday and next Tuesday. If for any reason you don\'t receive your package before the end of next week, please reach out to us for details on your shipment.\n\n'
+                      'As always, thank you for shopping with us and we hope you love our specially formulated Cucumber Mask!',
+                  avatar: '$_avatarsLocation/avatar_express.png',
+                  recipients: 'Jeff',
+                  containsPictures: false,
+                  type: ["inbox"],
+                ));
+                Navigator.of(context).pop();
+              },
             ),
           ),
         ],

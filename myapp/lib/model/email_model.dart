@@ -21,7 +21,7 @@ class Email {
   @HiveField(1)
   final String sender;
   @HiveField(2)
-  final String time;
+  final DateTime time;
   @HiveField(3)
   final String subject;
   @HiveField(4)
@@ -44,7 +44,7 @@ class InboxEmail extends Email {
     @HiveField(1)
     String sender,
     @HiveField(2)
-    String time,
+    DateTime time,
     @HiveField(3)
     String subject,
     @HiveField(4)
