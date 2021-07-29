@@ -14,6 +14,7 @@ class ComposePage extends StatelessWidget {
     var _subject = '';
     var _recipient = 'Recipient';
     var _recipientAvatar = 'reply/avatars/avatar_0.jpg';
+    TextEditingController _subjectController;
 
     final emailStore = Provider.of<EmailStore>(context);
 
@@ -40,9 +41,10 @@ class ComposePage extends StatelessWidget {
                     subject: _subject,
                   ),
                   const _SectionDivider(),
-                  _SenderAddressRow(
-                    senderEmail: _senderEmail,
-                  ),
+                  // _SenderAddressRow(
+                  //   senderEmail: _senderEmail,
+                  // ),
+                  AutocompleteLocationa(), //TODO:! somehow get value (I was thinking  TextEditingController)
                   const _SectionDivider(),
                   _RecipientsRow(
                     recipients: _recipient,
@@ -71,7 +73,7 @@ class ComposePage extends StatelessWidget {
   }
 }
 
-class _SubjectRow extends StatefulWidget {
+class _SubjectRow extends StatefulWidget { //TODO this
   const _SubjectRow({@required this.subject}) : assert(subject != null);
 
   final String subject;
@@ -120,7 +122,7 @@ class _SubjectRowState extends State<_SubjectRow> {
               autofocus: false,
               style: theme.textTheme.headline6,
               decoration: InputDecoration.collapsed(
-                hintText: 'Subject',
+                hintText: 'Item',
                 hintStyle: theme.textTheme.headline6.copyWith(
                   color: theme.colorScheme.primary.withOpacity(0.5),
                 ),
@@ -199,6 +201,8 @@ class __SenderAddressRowState extends State<_SenderAddressRow> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
+    final emailStore = Provider.of<EmailStore>(context);
+    final locations = emailStore.getLocs();
     final accounts = [
       'flutterfan@gmail.com',
       'materialfan@gmail.com',
@@ -213,16 +217,16 @@ class __SenderAddressRowState extends State<_SenderAddressRow> {
       },
       itemBuilder: (context) => <PopupMenuItem<String>>[
         PopupMenuItem<String>(
-          value: accounts[0],
+          value: locations[0],
           child: Text(
-            accounts[0],
+            locations[0],
             style: textTheme.bodyText2,
           ),
         ),
         PopupMenuItem<String>(
-          value: accounts[1],
+          value: locations[1],
           child: Text(
-            accounts[1],
+            locations[1],
             style: textTheme.bodyText2,
           ),
         ),
@@ -249,6 +253,125 @@ class __SenderAddressRowState extends State<_SenderAddressRow> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class AutocompleteLocationa extends StatefulWidget {
+  const AutocompleteLocationa({Key key}) : super(key: key);
+
+  @override
+  __AutocompleteLocation createState() => __AutocompleteLocation();
+}
+
+class __AutocompleteLocation extends State<AutocompleteLocationa> {
+
+  @override
+  Widget build(BuildContext context) {
+    final emailStore = Provider.of<EmailStore>(context);
+    final _kOptions = emailStore.getLocs();
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 12,
+        top: 16,
+        right: 12,
+        bottom: 10,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+              child:
+              Autocomplete<String>(
+                fieldViewBuilder: (BuildContext context,
+                    TextEditingController textEditingController,
+                    FocusNode focusNode, VoidCallback onFieldSubmitted) {
+                  return TextFormField(
+                    controller: textEditingController,
+                    decoration: const InputDecoration(
+                      hintText: 'Location',
+                    ),
+                    focusNode: focusNode,
+                    onFieldSubmitted: (String value) {
+                      onFieldSubmitted();
+                    },
+                  );
+                },
+                optionsBuilder: (TextEditingValue textEditingValue) {
+                  if (textEditingValue.text == '') {
+                    return const Iterable<String>.empty();
+                  }
+                  return _kOptions.where((String option) {
+                    return option.contains(textEditingValue.text.toLowerCase());
+                  });
+                },
+                onSelected: (String selection) {
+                  // subjectController.text = "yeet";
+                  print('You just selected $selection');
+                },
+              )
+          )
+        ],
+      ),
+    );
+  }
+
+}
+
+class __AutocompleteLocationp extends StatelessWidget {
+  const __AutocompleteLocationp({Key key}) : super(key: key);
+
+
+  @override
+  Widget build(BuildContext context) {
+    final emailStore = Provider.of<EmailStore>(context);
+    final _kOptions = emailStore.getLocs();
+    final theme = Theme.of(context);
+    final textTheme = theme.textTheme;
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 12,
+        top: 16,
+        right: 12,
+        bottom: 10,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+              child:
+              Autocomplete<String>(
+                fieldViewBuilder: (BuildContext context,
+                    TextEditingController textEditingController,
+                    FocusNode focusNode, VoidCallback onFieldSubmitted) {
+                  return TextFormField(
+                    controller: textEditingController,
+                    decoration: const InputDecoration(
+                      hintText: 'Location',
+                    ),
+                    focusNode: focusNode,
+                    onFieldSubmitted: (String value) {
+                      onFieldSubmitted();
+                    },
+                  );
+                },
+                optionsBuilder: (TextEditingValue textEditingValue) {
+                  if (textEditingValue.text == '') {
+                    return const Iterable<String>.empty();
+                  }
+                  return _kOptions.where((String option) {
+                    return option.contains(textEditingValue.text.toLowerCase());
+                  });
+                },
+                onSelected: (String selection) {
+                  print('You just selected $selection');
+                },
+              )
+          )
+        ],
       ),
     );
   }
