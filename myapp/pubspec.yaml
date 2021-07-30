@@ -41,6 +41,7 @@ dependencies:
   adaptive_breakpoints: ^0.0.4
   flutter_localized_locales: ^2.0.1
   hive_generator: ^1.1.0
+  jiffy: ^4.1.0
 
 dev_dependencies:
   flutter_test:

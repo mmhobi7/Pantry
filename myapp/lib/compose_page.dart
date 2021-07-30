@@ -5,8 +5,18 @@ import 'package:provider/provider.dart';
 
 const _avatarsLocation = 'reply/avatars';
 
-class ComposePage extends StatelessWidget {
-  const ComposePage({Key key}) : super(key: key);
+
+
+
+class ComposePageState extends StatefulWidget {
+  const ComposePageState({Key key}) : super(key: key);
+
+  @override
+  ComposePage createState() => ComposePage();
+}
+
+class ComposePage extends State<ComposePageState> {
+  String _location = "Not set yet";
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +24,6 @@ class ComposePage extends StatelessWidget {
     var _subject = '';
     var _recipient = 'Recipient';
     var _recipientAvatar = 'reply/avatars/avatar_0.jpg';
-    TextEditingController _subjectController;
 
     final emailStore = Provider.of<EmailStore>(context);
 
@@ -38,13 +47,13 @@ class ComposePage extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _SubjectRow(
-                    subject: _subject,
+                    subject: _subject, loc: _location
                   ),
                   const _SectionDivider(),
                   // _SenderAddressRow(
                   //   senderEmail: _senderEmail,
                   // ),
-                  AutocompleteLocationa(), //TODO:! somehow get value (I was thinking  TextEditingController)
+                  __AutocompleteLocation(callback: (val) => setState(() => _location = val)),
                   const _SectionDivider(),
                   _RecipientsRow(
                     recipients: _recipient,
@@ -73,10 +82,12 @@ class ComposePage extends StatelessWidget {
   }
 }
 
-class _SubjectRow extends StatefulWidget { //TODO this
-  const _SubjectRow({@required this.subject}) : assert(subject != null);
+class _SubjectRow extends StatefulWidget {
+ //TODO this
+  const _SubjectRow({@required this.subject, this.loc}) : assert(subject != null);
 
   final String subject;
+  final String loc;
   @override
   _SubjectRowState createState() => _SubjectRowState();
 }
@@ -133,7 +144,7 @@ class _SubjectRowState extends State<_SubjectRow> {
             onPressed: () {
               emailStore.addItem(InboxEmail(
                 id: 0,
-                sender: 'dExpress',
+                sender: widget.loc,
                 time: DateTime.now(),
                 subject: _subjectController.text,
                 message: 'Cucumber Mjjjask Facial has shipped.\n\n'
@@ -157,7 +168,7 @@ class _SubjectRowState extends State<_SubjectRow> {
               onPressed: () {
                 emailStore.addItem(InboxEmail(
                   id: 0,
-                  sender: 'dExpress',
+                  sender: widget.loc,
                   time: DateTime.now(),
                   subject: _subjectController.text,
                   message: 'Cucumber Mjjjask Facial has shipped.\n\n'
@@ -203,10 +214,6 @@ class __SenderAddressRowState extends State<_SenderAddressRow> {
     final textTheme = theme.textTheme;
     final emailStore = Provider.of<EmailStore>(context);
     final locations = emailStore.getLocs();
-    final accounts = [
-      'flutterfan@gmail.com',
-      'materialfan@gmail.com',
-    ];
 
     return PopupMenuButton<String>(
       padding: EdgeInsets.zero,
@@ -258,73 +265,16 @@ class __SenderAddressRowState extends State<_SenderAddressRow> {
   }
 }
 
-class AutocompleteLocationa extends StatefulWidget {
-  const AutocompleteLocationa({Key key}) : super(key: key);
+typedef void StringCallback(String val);
 
-  @override
-  __AutocompleteLocation createState() => __AutocompleteLocation();
-}
+class __AutocompleteLocation extends StatelessWidget {
+  const __AutocompleteLocation({Key key, this.callback}) : super(key: key);
+  final StringCallback callback;
 
-class __AutocompleteLocation extends State<AutocompleteLocationa> {
-
-  @override
-  Widget build(BuildContext context) {
-    final emailStore = Provider.of<EmailStore>(context);
-    final _kOptions = emailStore.getLocs();
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: 12,
-        top: 16,
-        right: 12,
-        bottom: 10,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-              child:
-              Autocomplete<String>(
-                fieldViewBuilder: (BuildContext context,
-                    TextEditingController textEditingController,
-                    FocusNode focusNode, VoidCallback onFieldSubmitted) {
-                  return TextFormField(
-                    controller: textEditingController,
-                    decoration: const InputDecoration(
-                      hintText: 'Location',
-                    ),
-                    focusNode: focusNode,
-                    onFieldSubmitted: (String value) {
-                      onFieldSubmitted();
-                    },
-                  );
-                },
-                optionsBuilder: (TextEditingValue textEditingValue) {
-                  if (textEditingValue.text == '') {
-                    return const Iterable<String>.empty();
-                  }
-                  return _kOptions.where((String option) {
-                    return option.contains(textEditingValue.text.toLowerCase());
-                  });
-                },
-                onSelected: (String selection) {
-                  // subjectController.text = "yeet";
-                  print('You just selected $selection');
-                },
-              )
-          )
-        ],
-      ),
-    );
+  void _printLatestValue(TextEditingController textEditingController) {
+    callback(textEditingController.text);
   }
 
-}
-
-class __AutocompleteLocationp extends StatelessWidget {
-  const __AutocompleteLocationp({Key key}) : super(key: key);
-
-
   @override
   Widget build(BuildContext context) {
     final emailStore = Provider.of<EmailStore>(context);
@@ -347,11 +297,13 @@ class __AutocompleteLocationp extends StatelessWidget {
                 fieldViewBuilder: (BuildContext context,
                     TextEditingController textEditingController,
                     FocusNode focusNode, VoidCallback onFieldSubmitted) {
+                  textEditingController.addListener(() => _printLatestValue(textEditingController));
                   return TextFormField(
                     controller: textEditingController,
                     decoration: const InputDecoration(
                       hintText: 'Location',
                     ),
+                    style: Theme.of(context).textTheme.bodyText2,
                     focusNode: focusNode,
                     onFieldSubmitted: (String value) {
                       onFieldSubmitted();
@@ -367,7 +319,7 @@ class __AutocompleteLocationp extends StatelessWidget {
                   });
                 },
                 onSelected: (String selection) {
-                  print('You just selected $selection');
+                  callback(selection);
                 },
               )
           )
