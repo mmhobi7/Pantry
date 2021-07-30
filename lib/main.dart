@@ -4,11 +4,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'app.dart';
+import 'constants.dart';
 import 'model/email_model.dart';
 
 const _avatarsLocation = 'reply/avatars';
-
-const hiveDB = 'bruhb';
 
 final _inbox = <Email>[
   InboxEmail(
@@ -23,6 +22,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["inbox"],
+    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    quantity: 20,
   ),
   InboxEmail(
     id: 2,
@@ -38,6 +39,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["inbox"],
+    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    quantity: 8.2,
   ),
   InboxEmail(
     id: 3,
@@ -49,6 +52,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: true,
     type: ["inbox"],
+    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    quantity: 1.2,
   ),
   InboxEmail(
     id: 4,
@@ -67,6 +72,8 @@ final _inbox = <Email>[
     recipients: 'Allison, Kim, Jeff',
     containsPictures: false,
     type: ["inbox"],
+    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    quantity: 0,
   ),
   InboxEmail(
     id: 5,
@@ -78,6 +85,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["inbox"],
+    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    quantity: 1.98,
   ),
   InboxEmail(
     id: 6,
@@ -89,6 +98,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["inbox"],
+    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    quantity: 9.0,
   ),
   InboxEmail(
     id: 7,
@@ -102,6 +113,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["inbox"],
+    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    quantity: 5.4,
   ),
   InboxEmail(
     id: 8,
@@ -115,6 +128,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["inbox"],
+    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day+3),
+    quantity: 5.0,
   ),
   InboxEmail(
     id: 9,
@@ -128,6 +143,8 @@ final _inbox = <Email>[
     containsPictures: false,
     type: ["inbox"],
     inboxType: InboxType.spam,
+    expiry: DateTime(DateTime.now().year, DateTime.now().month + 2, DateTime.now().day),
+    quantity: 5.0,
   ),
 ];
 
@@ -145,6 +162,8 @@ final _outbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["outbox"],
+    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    quantity: 5.0,
   ),
   InboxEmail(
     id: 11,
@@ -158,6 +177,8 @@ final _outbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["outbox", "inbox", "drafts"],
+    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    quantity: 5.0,
   ),
 ];
 
@@ -173,6 +194,8 @@ final _drafts = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["drafts"],
+    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    quantity: 5.0,
   ),
 ];
 
@@ -186,7 +209,7 @@ Future<void> _deleteCacheDir() async {
 
 Future<void> _deleteAppDir() async {
   final appDir = await getApplicationSupportDirectory();
-
+  print(appDir);
   if (appDir.existsSync()) {
     appDir.deleteSync(recursive: true);
   }

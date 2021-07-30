@@ -21,3 +21,13 @@ const splashPageAnimationDurationInMilliseconds = 300;
 
 // The desktop top padding for a page's first header (e.g. Gallery, Settings)
 const firstHeaderDesktopTopPadding = 5.0;
+
+const hiveDB = 'brhuhskdb';
+
+removeTrailingZeros(double n) {
+  if(n!=0 && n!=null) {
+    return "- Quantity: "+n.toString().replaceAll(RegExp(r"([.]*0+)(?!.*\d)"), "");
+  } else {
+    return "";
+  }
+}

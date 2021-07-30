@@ -14,6 +14,8 @@ class Email {
     this.recipients,
     this.containsPictures,
     this.type,
+    this.expiry,
+    this.quantity,
   });
 
   @HiveField(0)
@@ -34,6 +36,10 @@ class Email {
   final bool containsPictures;
   @HiveField(8)
   final List<String> type;
+  @HiveField(9)
+  final DateTime expiry;
+  @HiveField(10)
+  final double quantity;
 }
 
 @HiveType(typeId : 2)
@@ -57,6 +63,10 @@ class InboxEmail extends Email {
     bool containsPictures,
     @HiveField(8)
     List<String> type,
+    @HiveField(9)
+    DateTime expiry,
+    @HiveField(10)
+    double quantity,
     this.inboxType = InboxType.normal,
   }) : super(
           id: id,
@@ -68,6 +78,8 @@ class InboxEmail extends Email {
           recipients: recipients,
           containsPictures: containsPictures,
           type: type,
+          expiry: expiry,
+          quantity: quantity,
         );
 
   InboxType inboxType;
