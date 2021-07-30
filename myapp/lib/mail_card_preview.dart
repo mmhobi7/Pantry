@@ -1,14 +1,14 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:provider/provider.dart';
+
 import 'adaptive.dart';
 import 'colors.dart';
 import 'mail_view_page.dart';
 import 'model/email_model.dart';
 import 'model/email_store.dart';
 import 'profile_avatar.dart';
-import 'package:provider/provider.dart';
-import 'package:jiffy/jiffy.dart';
 
 const _assetsPackage = 'flutter_gallery_assets';
 const _iconAssetLocation = 'reply/icons';
@@ -215,7 +215,8 @@ class _MailPreview extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              '${email.sender} - '+Jiffy(email.time).fromNow(),
+                              '${email.sender} - ' +
+                                  Jiffy(email.time).fromNow(),
                               style: textTheme.caption,
                             ),
                             const SizedBox(height: 4),

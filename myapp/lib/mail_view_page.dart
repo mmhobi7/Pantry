@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:provider/provider.dart';
+
 import 'model/email_model.dart';
 import 'model/email_store.dart';
 import 'profile_avatar.dart';
-import 'package:provider/provider.dart';
-import 'package:jiffy/jiffy.dart';
 
 class MailViewPage extends StatelessWidget {
   const MailViewPage({Key key, @required this.id, @required this.email})
@@ -96,7 +96,7 @@ class _MailViewHeader extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text('${email.sender} - '+ Jiffy(email.time).fromNow()),
+                Text('${email.sender} - ' + Jiffy(email.time).fromNow()),
                 const SizedBox(height: 4),
                 Text(
                   'To ${email.recipients},',
