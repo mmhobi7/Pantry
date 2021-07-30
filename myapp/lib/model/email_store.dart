@@ -14,20 +14,19 @@ class EmailStore with ChangeNotifier {
   Iterable<Email> _drafts;
 
 
-
   List<Email> get _allEmails {
-    _inbox=userBox.values.where((email) => email.type.contains("inbox"));
-    _outbox=userBox.values.where((email) => email.type.contains("outbox"));
-    _drafts=userBox.values.where((email) => email.type.contains("drafts"));
+    _inbox = userBox.values.where((email) => email.type.contains("inbox"));
+    _outbox = userBox.values.where((email) => email.type.contains("outbox"));
+    _drafts = userBox.values.where((email) => email.type.contains("drafts"));
     return [
-        ..._inbox,
-        ..._outbox,
-        ..._drafts,
-      ];
+      ..._inbox,
+      ..._outbox,
+      ..._drafts,
+    ];
   }
 
   List<Email> get inboxEmails {
-    _inbox=userBox.values.where((email) => email.type.contains("inbox"));
+    _inbox = userBox.values.where((email) => email.type.contains("inbox"));
     return _inbox.where((email) {
       if (email is InboxEmail) {
         return email.inboxType == InboxType.normal;
@@ -37,7 +36,7 @@ class EmailStore with ChangeNotifier {
   }
 
   List<Email> get spamEmails {
-    _inbox=userBox.values.where((email) => email.type.contains("inbox"));
+    _inbox = userBox.values.where((email) => email.type.contains("inbox"));
     return _inbox.where((email) {
       if (email is InboxEmail) {
         return email.inboxType == InboxType.spam &&
@@ -51,18 +50,20 @@ class EmailStore with ChangeNotifier {
       _allEmails.firstWhere((email) => email.id == _selectedEmailId);
 
   List<Email> get outboxEmails {
-    _outbox=userBox.values.where((email) => email.type.contains("outbox"));
+    _outbox = userBox.values.where((email) => email.type.contains("outbox"));
     return _outbox.where((email) => !trashEmailIds.contains(email.id)).toList();
   }
 
   List<Email> get draftEmails {
-    _drafts=userBox.values.where((email) => email.type.contains("drafts"));
+    _drafts = userBox.values.where((email) => email.type.contains("drafts"));
     return _drafts.where((email) => !trashEmailIds.contains(email.id)).toList();
   }
 
   Set<int> starredEmailIds = {};
+
   bool isEmailStarred(int id) =>
       _allEmails.any((email) => email.id == id && starredEmailIds.contains(id));
+
   bool get isCurrentEmailStarred => starredEmailIds.contains(currentEmail.id);
 
   List<Email> get starredEmails {
@@ -82,6 +83,7 @@ class EmailStore with ChangeNotifier {
   }
 
   Set<int> trashEmailIds = {7, 8};
+
   List<Email> get trashEmails {
     return _allEmails
         .where((email) => trashEmailIds.contains(email.id))
@@ -94,7 +96,7 @@ class EmailStore with ChangeNotifier {
     notifyListeners();
   }
 
-  void addItem(InboxEmail item){
+  void addItem(InboxEmail item) {
     // var last = userBox.values.where((email) => email.type.contains("outbox")).;
     print("***REMOVED***");
     print(item.subject);
@@ -102,7 +104,9 @@ class EmailStore with ChangeNotifier {
   }
 
   int _selectedEmailId = -1;
+
   int get selectedEmailId => _selectedEmailId;
+
   set selectedEmailId(int value) {
     _selectedEmailId = value;
     notifyListeners();
@@ -111,16 +115,31 @@ class EmailStore with ChangeNotifier {
   bool get onMailView => _selectedEmailId > -1;
 
   MailboxPageType _selectedMailboxPage = MailboxPageType.inbox;
+
   MailboxPageType get selectedMailboxPage => _selectedMailboxPage;
+
   set selectedMailboxPage(MailboxPageType mailboxPage) {
     _selectedMailboxPage = mailboxPage;
     notifyListeners();
   }
 
   bool _onSearchPage = false;
+
   bool get onSearchPage => _onSearchPage;
+
   set onSearchPage(bool value) {
     _onSearchPage = value;
     notifyListeners();
+  }
+
+  List<String> getLocs() {
+    List<String> locations = [];
+    userBox.values.forEach((email) { //TODO: optimize
+      if (!locations.contains(email.sender)) {
+        locations.add(email.sender);
+      }
+    });
+    print(locations);
+    return locations;
   }
 }

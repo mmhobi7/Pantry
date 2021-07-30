@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'model/email_store.dart';
 import 'package:provider/provider.dart';
+
+import 'model/email_store.dart';
 
 class SearchPage extends StatelessWidget {
   const SearchPage({Key key}) : super(key: key);
