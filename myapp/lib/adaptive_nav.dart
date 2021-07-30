@@ -1217,7 +1217,7 @@ class _ReplyFabState extends State<_ReplyFab>
           // See https://github.com/flutter/flutter/issues/69924.
           return OpenContainer(
             openBuilder: (context, closedContainer) {
-              return const ComposePage();
+              return const ComposePageState();
             },
             openColor: theme.cardColor,
             closedShape: circleFabBorder,

@@ -23,7 +23,7 @@ class ReplyApp extends StatefulWidget {
   static Route createComposeRoute(RouteSettings settings) {
     return PageRouteBuilder<void>(
       pageBuilder: (context, animation, secondaryAnimation) =>
-          const ComposePage(),
+          const ComposePageState(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return FadeThroughTransition(
           fillColor: Theme.of(context).cardColor,
