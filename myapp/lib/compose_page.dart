@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'model/email_model.dart';
-import 'model/email_store.dart';
 import 'package:provider/provider.dart';
 
+import 'model/email_model.dart';
+import 'model/email_store.dart';
+
 const _avatarsLocation = 'reply/avatars';
-
-
-
 
 class ComposePageState extends StatefulWidget {
   const ComposePageState({Key key}) : super(key: key);
@@ -46,14 +44,10 @@ class ComposePage extends State<ComposePageState> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _SubjectRow(
-                    subject: _subject, loc: _location
-                  ),
+                  _SubjectRow(subject: _subject, loc: _location),
                   const _SectionDivider(),
-                  // _SenderAddressRow(
-                  //   senderEmail: _senderEmail,
-                  // ),
-                  __AutocompleteLocation(callback: (val) => setState(() => _location = val)),
+                  __AutocompleteLocation(
+                      callback: (val) => setState(() => _location = val)),
                   const _SectionDivider(),
                   _RecipientsRow(
                     recipients: _recipient,
@@ -83,11 +77,13 @@ class ComposePage extends State<ComposePageState> {
 }
 
 class _SubjectRow extends StatefulWidget {
- //TODO this
-  const _SubjectRow({@required this.subject, this.loc}) : assert(subject != null);
+  //TODO this
+  const _SubjectRow({@required this.subject, this.loc})
+      : assert(subject != null);
 
   final String subject;
   final String loc;
+
   @override
   _SubjectRowState createState() => _SubjectRowState();
 }
@@ -189,82 +185,6 @@ class _SubjectRowState extends State<_SubjectRow> {
   }
 }
 
-class _SenderAddressRow extends StatefulWidget {
-  const _SenderAddressRow({@required this.senderEmail})
-      : assert(senderEmail != null);
-
-  final String senderEmail;
-
-  @override
-  __SenderAddressRowState createState() => __SenderAddressRowState();
-}
-
-class __SenderAddressRowState extends State<_SenderAddressRow> {
-  String senderEmail;
-
-  @override
-  void initState() {
-    super.initState();
-    senderEmail = widget.senderEmail;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
-    final emailStore = Provider.of<EmailStore>(context);
-    final locations = emailStore.getLocs();
-
-    return PopupMenuButton<String>(
-      padding: EdgeInsets.zero,
-      onSelected: (email) {
-        setState(() {
-          senderEmail = email;
-        });
-      },
-      itemBuilder: (context) => <PopupMenuItem<String>>[
-        PopupMenuItem<String>(
-          value: locations[0],
-          child: Text(
-            locations[0],
-            style: textTheme.bodyText2,
-          ),
-        ),
-        PopupMenuItem<String>(
-          value: locations[1],
-          child: Text(
-            locations[1],
-            style: textTheme.bodyText2,
-          ),
-        ),
-      ],
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 12,
-          top: 16,
-          right: 10,
-          bottom: 10,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text(
-                senderEmail,
-                style: textTheme.bodyText2,
-              ),
-            ),
-            Icon(
-              Icons.arrow_drop_down,
-              color: theme.colorScheme.onSurface,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 typedef void StringCallback(String val);
 
 class __AutocompleteLocation extends StatelessWidget {
@@ -292,37 +212,37 @@ class __AutocompleteLocation extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-              child:
-              Autocomplete<String>(
-                fieldViewBuilder: (BuildContext context,
-                    TextEditingController textEditingController,
-                    FocusNode focusNode, VoidCallback onFieldSubmitted) {
-                  textEditingController.addListener(() => _printLatestValue(textEditingController));
-                  return TextFormField(
-                    controller: textEditingController,
-                    decoration: const InputDecoration(
-                      hintText: 'Location',
-                    ),
-                    style: Theme.of(context).textTheme.bodyText2,
-                    focusNode: focusNode,
-                    onFieldSubmitted: (String value) {
-                      onFieldSubmitted();
-                    },
-                  );
+              child: Autocomplete<String>(
+            fieldViewBuilder: (BuildContext context,
+                TextEditingController textEditingController,
+                FocusNode focusNode,
+                VoidCallback onFieldSubmitted) {
+              textEditingController
+                  .addListener(() => _printLatestValue(textEditingController));
+              return TextFormField(
+                controller: textEditingController,
+                decoration: const InputDecoration(
+                  hintText: 'Location',
+                ),
+                style: Theme.of(context).textTheme.bodyText2,
+                focusNode: focusNode,
+                onFieldSubmitted: (String value) {
+                  onFieldSubmitted();
                 },
-                optionsBuilder: (TextEditingValue textEditingValue) {
-                  if (textEditingValue.text == '') {
-                    return const Iterable<String>.empty();
-                  }
-                  return _kOptions.where((String option) {
-                    return option.contains(textEditingValue.text.toLowerCase());
-                  });
-                },
-                onSelected: (String selection) {
-                  callback(selection);
-                },
-              )
-          )
+              );
+            },
+            optionsBuilder: (TextEditingValue textEditingValue) {
+              if (textEditingValue.text == '') {
+                return const Iterable<String>.empty();
+              }
+              return _kOptions.where((String option) {
+                return option.contains(textEditingValue.text.toLowerCase());
+              });
+            },
+            onSelected: (String selection) {
+              callback(selection);
+            },
+          ))
         ],
       ),
     );

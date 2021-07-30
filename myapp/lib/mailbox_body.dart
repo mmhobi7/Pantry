@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'adaptive.dart';
 import 'mail_card_preview.dart';
 import 'model/email_model.dart';
 import 'model/email_store.dart';
-import 'package:provider/provider.dart';
 
 class MailboxBody extends StatelessWidget {
   const MailboxBody({Key key}) : super(key: key);

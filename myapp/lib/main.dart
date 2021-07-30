@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'model/email_model.dart';
+
 import 'app.dart';
+import 'model/email_model.dart';
 
 const _avatarsLocation = 'reply/avatars';
 
@@ -137,7 +138,7 @@ final _outbox = <Email>[
     time: DateTime.now(),
     subject: 'High school reunion?',
     message:
-    'Hi friends,\n\nI was at the grocery store on Sunday night.. when I ran into Genie Williams! I almost didn\'t recognize her afer 20 years!\n\n'
+        'Hi friends,\n\nI was at the grocery store on Sunday night.. when I ran into Genie Williams! I almost didn\'t recognize her afer 20 years!\n\n'
         'Anyway, it turns out she is on the organizing committee for the high school reunion this fall. I don\'t know if you were planning on going or not, but she could definitely use our help in trying to track down lots of missing alums. '
         'If you can make it, we\'re doing a little phone-tree party at her place next Saturday, hoping that if we can find one person, thee more will...',
     avatar: '$_avatarsLocation/avatar_7.jpg',
@@ -151,7 +152,7 @@ final _outbox = <Email>[
     time: DateTime.now(),
     subject: 'Recipe to try',
     message:
-    'Raspberry Pie: We should make this pie recipe tonight! The filling is '
+        'Raspberry Pie: We should make this pie recipe tonight! The filling is '
         'very quick to put together.',
     avatar: '$_avatarsLocation/avatar_2.jpg',
     recipients: 'Jeff',
@@ -186,11 +187,10 @@ Future<void> _deleteCacheDir() async {
 Future<void> _deleteAppDir() async {
   final appDir = await getApplicationSupportDirectory();
 
-  if(appDir.existsSync()){
+  if (appDir.existsSync()) {
     appDir.deleteSync(recursive: true);
   }
 }
-
 
 void main() async {
   await _deleteAppDir();
