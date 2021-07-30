@@ -5,18 +5,19 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/gallery_localizations.dart';
+import 'package:provider/provider.dart';
+
 import 'adaptive.dart';
 import 'app.dart';
 import 'bottom_drawer.dart';
 import 'colors.dart';
-import 'mailbox_body.dart';
 import 'compose_page.dart';
+import 'mailbox_body.dart';
 import 'model/email_model.dart';
 import 'model/email_store.dart';
 import 'profile_avatar.dart';
 import 'search_page.dart';
 import 'waterfall_notched_rectangle.dart';
-import 'package:provider/provider.dart';
 
 const _assetsPackage = 'flutter_gallery_assets';
 const _iconAssetLocation = 'reply/icons';
@@ -955,8 +956,7 @@ class _BottomDrawerDestinations extends StatelessWidget {
             dropArrowController.forward();
             Future.delayed(
               Duration(
-                milliseconds: (drawerController.value == 1 ? 300 : 120) *
-                    1,
+                milliseconds: (drawerController.value == 1 ? 300 : 120) * 1,
               ),
               () {
                 // Wait until animations are complete to reload the state.
@@ -1005,8 +1005,10 @@ class _Destination {
 
   // Which mailbox page to display. For example, 'Starred' or 'Trash'.
   final MailboxPageType type;
+
   // The localized text label for the inbox.
   final String textLabel;
+
   // The icon that appears next to the text label for the inbox.
   final String icon;
 }
@@ -1217,7 +1219,7 @@ class _ReplyFabState extends State<_ReplyFab>
           // See https://github.com/flutter/flutter/issues/69924.
           return OpenContainer(
             openBuilder: (context, closedContainer) {
-              return const ComposePage();
+              return const ComposePageState();
             },
             openColor: theme.cardColor,
             closedShape: circleFabBorder,

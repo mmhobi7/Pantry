@@ -1,16 +1,16 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'letter_spacing.dart';
 import 'package:flutter_gen/gen_l10n/gallery_localizations.dart';
-import 'adaptive_nav.dart';
-import 'colors.dart';
-import 'compose_page.dart';
-import 'model/email_model.dart';
-import 'model/email_store.dart';
-import 'routes.dart' as routes;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'adaptive_nav.dart';
+import 'colors.dart';
+import 'compose_page.dart';
+import 'letter_spacing.dart';
+import 'model/email_model.dart';
+import 'model/email_store.dart';
+import 'routes.dart' as routes;
 
 final rootNavKey = GlobalKey<NavigatorState>();
 
@@ -23,7 +23,7 @@ class ReplyApp extends StatefulWidget {
   static Route createComposeRoute(RouteSettings settings) {
     return PageRouteBuilder<void>(
       pageBuilder: (context, animation, secondaryAnimation) =>
-          const ComposePage(),
+          const ComposePageState(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return FadeThroughTransition(
           fillColor: Theme.of(context).cardColor,

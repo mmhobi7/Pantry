@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'model/email_model.dart';
 import 'model/email_store.dart';
-import 'package:provider/provider.dart';
 
 const _avatarsLocation = 'reply/avatars';
 
-class ComposePage extends StatelessWidget {
-  const ComposePage({Key key}) : super(key: key);
+class ComposePageState extends StatefulWidget {
+  const ComposePageState({Key key}) : super(key: key);
+
+  @override
+  ComposePage createState() => ComposePage();
+}
+
+class ComposePage extends State<ComposePageState> {
+  String _location = "Not set yet";
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +44,10 @@ class ComposePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _SubjectRow(
-                    subject: _subject,
-                  ),
+                  _SubjectRow(subject: _subject, loc: _location),
                   const _SectionDivider(),
-                  _SenderAddressRow(
-                    senderEmail: _senderEmail,
-                  ),
+                  __AutocompleteLocation(
+                      callback: (val) => setState(() => _location = val)),
                   const _SectionDivider(),
                   _RecipientsRow(
                     recipients: _recipient,
@@ -72,9 +77,13 @@ class ComposePage extends StatelessWidget {
 }
 
 class _SubjectRow extends StatefulWidget {
-  const _SubjectRow({@required this.subject}) : assert(subject != null);
+  //TODO this
+  const _SubjectRow({@required this.subject, this.loc})
+      : assert(subject != null);
 
   final String subject;
+  final String loc;
+
   @override
   _SubjectRowState createState() => _SubjectRowState();
 }
@@ -120,7 +129,7 @@ class _SubjectRowState extends State<_SubjectRow> {
               autofocus: false,
               style: theme.textTheme.headline6,
               decoration: InputDecoration.collapsed(
-                hintText: 'Subject',
+                hintText: 'Item',
                 hintStyle: theme.textTheme.headline6.copyWith(
                   color: theme.colorScheme.primary.withOpacity(0.5),
                 ),
@@ -131,7 +140,7 @@ class _SubjectRowState extends State<_SubjectRow> {
             onPressed: () {
               emailStore.addItem(InboxEmail(
                 id: 0,
-                sender: 'dExpress',
+                sender: widget.loc,
                 time: DateTime.now(),
                 subject: _subjectController.text,
                 message: 'Cucumber Mjjjask Facial has shipped.\n\n'
@@ -155,7 +164,7 @@ class _SubjectRowState extends State<_SubjectRow> {
               onPressed: () {
                 emailStore.addItem(InboxEmail(
                   id: 0,
-                  sender: 'dExpress',
+                  sender: widget.loc,
                   time: DateTime.now(),
                   subject: _subjectController.text,
                   message: 'Cucumber Mjjjask Facial has shipped.\n\n'
@@ -176,79 +185,65 @@ class _SubjectRowState extends State<_SubjectRow> {
   }
 }
 
-class _SenderAddressRow extends StatefulWidget {
-  const _SenderAddressRow({@required this.senderEmail})
-      : assert(senderEmail != null);
+typedef void StringCallback(String val);
 
-  final String senderEmail;
+class __AutocompleteLocation extends StatelessWidget {
+  const __AutocompleteLocation({Key key, this.callback}) : super(key: key);
+  final StringCallback callback;
 
-  @override
-  __SenderAddressRowState createState() => __SenderAddressRowState();
-}
-
-class __SenderAddressRowState extends State<_SenderAddressRow> {
-  String senderEmail;
-
-  @override
-  void initState() {
-    super.initState();
-    senderEmail = widget.senderEmail;
+  void _printLatestValue(TextEditingController textEditingController) {
+    callback(textEditingController.text);
   }
 
   @override
   Widget build(BuildContext context) {
+    final emailStore = Provider.of<EmailStore>(context);
+    final _kOptions = emailStore.getLocs();
     final theme = Theme.of(context);
     final textTheme = theme.textTheme;
-    final accounts = [
-      'flutterfan@gmail.com',
-      'materialfan@gmail.com',
-    ];
-
-    return PopupMenuButton<String>(
-      padding: EdgeInsets.zero,
-      onSelected: (email) {
-        setState(() {
-          senderEmail = email;
-        });
-      },
-      itemBuilder: (context) => <PopupMenuItem<String>>[
-        PopupMenuItem<String>(
-          value: accounts[0],
-          child: Text(
-            accounts[0],
-            style: textTheme.bodyText2,
-          ),
-        ),
-        PopupMenuItem<String>(
-          value: accounts[1],
-          child: Text(
-            accounts[1],
-            style: textTheme.bodyText2,
-          ),
-        ),
-      ],
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: 12,
-          top: 16,
-          right: 10,
-          bottom: 10,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text(
-                senderEmail,
-                style: textTheme.bodyText2,
-              ),
-            ),
-            Icon(
-              Icons.arrow_drop_down,
-              color: theme.colorScheme.onSurface,
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 12,
+        top: 16,
+        right: 12,
+        bottom: 10,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+              child: Autocomplete<String>(
+            fieldViewBuilder: (BuildContext context,
+                TextEditingController textEditingController,
+                FocusNode focusNode,
+                VoidCallback onFieldSubmitted) {
+              textEditingController
+                  .addListener(() => _printLatestValue(textEditingController));
+              return TextFormField(
+                controller: textEditingController,
+                decoration: const InputDecoration(
+                  hintText: 'Location',
+                ),
+                style: Theme.of(context).textTheme.bodyText2,
+                focusNode: focusNode,
+                onFieldSubmitted: (String value) {
+                  onFieldSubmitted();
+                },
+              );
+            },
+            optionsBuilder: (TextEditingValue textEditingValue) {
+              if (textEditingValue.text == '') {
+                return const Iterable<String>.empty();
+              }
+              return _kOptions.where((String option) {
+                return option.contains(textEditingValue.text.toLowerCase());
+              });
+            },
+            onSelected: (String selection) {
+              callback(selection);
+            },
+          ))
+        ],
       ),
     );
   }
