@@ -12,32 +12,30 @@ const _avatarsLocation = 'reply/avatars';
 final _inbox = <Email>[
   InboxEmail(
     id: 1,
-    sender: 'Google Express',
+    recipients: 'Muhamed Hobi',
     time: DateTime.now(),
-    subject: 'Package shipped!',
-    message: 'Cucumber Mask Facial has shipped.\n\n'
-        'Keep an eye out for a package to arrive between this Thursday and next Tuesday. If for any reason you don\'t receive your package before the end of next week, please reach out to us for details on your shipment.\n\n'
-        'As always, thank you for shopping with us and we hope you love our specially formulated Cucumber Mask!',
+    subject: 'Apple',
+    message: 'The cherry red kind!',
     avatar: '$_avatarsLocation/avatar_express.png',
-    recipients: 'Jeff',
+    sender: 'Pantry',
     containsPictures: false,
     type: ["inbox"],
     expiry: DateTime(
         DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
-    quantity: 20,
+    quantity: 20.5,
   ),
   InboxEmail(
     id: 2,
-    sender: 'Ali Connors',
+    recipients: 'Ali Connors',
     time: DateTime.now(),
-    subject: 'Brunch this weekend?',
+    subject: 'Banana',
     message:
         'I\'ll be in your neighborhood doing errands and was hoping to catch you for a coffee this Saturday. If you don\'t have anything scheduled, it would be great to see you! It feels like its been forever.\n\n'
         'If we do get a chance to get together, remind me to tell you about Kim. She stopped over at the house to say hey to the kids and told me all about her trip to Mexico.\n\n'
         'Talk to you soon,\n\n'
         'Ali',
     avatar: '$_avatarsLocation/avatar_5.jpg',
-    recipients: 'Jeff',
+    sender: 'Refrigerator',
     containsPictures: false,
     type: ["inbox"],
     expiry: DateTime(
@@ -46,12 +44,12 @@ final _inbox = <Email>[
   ),
   InboxEmail(
     id: 3,
-    sender: 'Allison Trabucco',
+    recipients: 'Allison Trabucco',
     time: DateTime.now(),
-    subject: 'Bonjour from Paris',
+    subject: 'Tomato',
     message: 'Here are some great shots from my trip...',
     avatar: '$_avatarsLocation/avatar_3.jpg',
-    recipients: 'Jeff',
+    sender: 'Closet',
     containsPictures: true,
     type: ["inbox"],
     expiry: DateTime(
@@ -60,9 +58,9 @@ final _inbox = <Email>[
   ),
   InboxEmail(
     id: 4,
-    sender: 'Trevor Hansen',
+    recipients: 'Trevor Hansen',
     time: DateTime.now(),
-    subject: 'Brazil trip',
+    subject: 'Captain Crunch cereal',
     message:
         'Thought we might be able to go over some details about our upcoming vacation.\n\n'
         'I\'ve been doing a bit of research and have come across a few paces in Northern Brazil that I think we should check out. '
@@ -72,7 +70,7 @@ final _inbox = <Email>[
         'I\'m assuming we can find places to stay and things to do as we drive and find places we think look interesting. But... I know you\'re more of a planner, so if you have ideas or places in mind, lets jot some ideas down!\n\n'
         'Maybe we can jump on the phone later today if you have a second.',
     avatar: '$_avatarsLocation/avatar_8.jpg',
-    recipients: 'Allison, Kim, Jeff',
+    sender: 'Microwave',
     containsPictures: false,
     type: ["inbox"],
     expiry: DateTime(
@@ -81,12 +79,12 @@ final _inbox = <Email>[
   ),
   InboxEmail(
     id: 5,
-    sender: 'Frank Hawkins',
+    recipients: 'Frank Hawkins',
     time: DateTime.now(),
-    subject: 'Update to Your Itinerary',
-    message: '',
+    subject: 'Chobani Greek Non-Fat Plain Yogurt',
+    message: 'For my digestive system',
     avatar: '$_avatarsLocation/avatar_4.jpg',
-    recipients: 'Jeff',
+    sender: 'Toaster',
     containsPictures: false,
     type: ["inbox"],
     expiry: DateTime(
@@ -95,28 +93,28 @@ final _inbox = <Email>[
   ),
   InboxEmail(
     id: 6,
-    sender: 'Google Express',
+    recipients: 'Muhamed Hobi',
     time: DateTime.now(),
-    subject: 'Delivered',
+    subject: 'Pompeian Robust Extra Virgin Olive Oil',
     message: 'Your shoes should be waiting for you at home!',
     avatar: '$_avatarsLocation/avatar_express.png',
-    recipients: 'Jeff',
+    sender: 'Sofa',
     containsPictures: false,
     type: ["inbox"],
     expiry: DateTime(
         DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
-    quantity: 9.0,
+    quantity: 16.0,
   ),
   InboxEmail(
     id: 7,
-    sender: 'Frank Hawkins',
+    recipients: 'Frank Hawkins',
     time: DateTime.now(),
-    subject: 'Your update on the Google Play Store is live!',
+    subject: 'Welch\'s Fruit Snacks',
     message:
         'Your update is now live on the Play Store and available for your alpha users to start testing.\n\n'
         'Your alpha testers will be automatically notified. If you\'d rather send them a link directly, go to your Google Play Console and follow the instructions for obtaining an open alpha testing link.',
     avatar: '$_avatarsLocation/avatar_4.jpg',
-    recipients: 'Jeff',
+    sender: 'Oven',
     containsPictures: false,
     type: ["inbox"],
     expiry: DateTime(
@@ -125,14 +123,14 @@ final _inbox = <Email>[
   ),
   InboxEmail(
     id: 8,
-    sender: 'Allison Trabucco',
+    recipients: 'Allison Trabucco',
     time: DateTime.now(),
-    subject: 'Try a free TrailGo account',
+    subject: 'Avocados',
     message:
         'Looking for the best hiking trails in your area? TrailGo gets you on the path to the outdoors faster than you can pack a sandwich.\n\n'
         'Whether you\'re an experienced hiker or just looking to get outside for the afternoon, there\'s a segment that suits you.',
     avatar: '$_avatarsLocation/avatar_3.jpg',
-    recipients: 'Jeff',
+    sender: 'Laundry',
     containsPictures: false,
     type: ["inbox"],
     expiry: DateTime(
@@ -141,13 +139,13 @@ final _inbox = <Email>[
   ),
   InboxEmail(
     id: 9,
-    sender: 'Allison Trabucco',
+    recipients: 'Allison Trabucco',
     time: DateTime.now(),
-    subject: 'Free money',
+    subject: 'BARILLA Gluten Free Spaghetti, 12 Ounce - Non-GMO Gluten Free Pasta Made with Blend of Corn & Rice - Vegan Pasta ',
     message:
         'You\'ve been selected as a winner in our latest raffle! To claim your prize, click on the link.',
     avatar: '$_avatarsLocation/avatar_3.jpg',
-    recipients: 'Jeff',
+    sender: 'Balcony',
     containsPictures: false,
     type: ["inbox"],
     inboxType: InboxType.spam,
@@ -160,33 +158,33 @@ final _inbox = <Email>[
 final _outbox = <Email>[
   InboxEmail(
     id: 10,
-    sender: 'Kim Alen',
+    recipients: 'Kim Alen',
     time: DateTime.now(),
-    subject: 'High school reunion?',
+    subject: 'Nature Valley Granola Bar Oats N Honey',
     message:
         'Hi friends,\n\nI was at the grocery store on Sunday night.. when I ran into Genie Williams! I almost didn\'t recognize her afer 20 years!\n\n'
         'Anyway, it turns out she is on the organizing committee for the high school reunion this fall. I don\'t know if you were planning on going or not, but she could definitely use our help in trying to track down lots of missing alums. '
         'If you can make it, we\'re doing a little phone-tree party at her place next Saturday, hoping that if we can find one person, thee more will...',
     avatar: '$_avatarsLocation/avatar_7.jpg',
-    recipients: 'Jeff',
+    sender: 'Kitchen',
     containsPictures: false,
-    type: ["outbox"],
+    type: ["drafts"],
     expiry: DateTime(
         DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
     quantity: 5.0,
   ),
   InboxEmail(
     id: 11,
-    sender: 'Sandra Adams',
+    recipients: 'Sandra Adams',
     time: DateTime.now(),
-    subject: 'Recipe to try',
+    subject: 'Hellmanns Mayonnaise',
     message:
         'Raspberry Pie: We should make this pie recipe tonight! The filling is '
         'very quick to put together.',
     avatar: '$_avatarsLocation/avatar_2.jpg',
-    recipients: 'Jeff',
+    sender: 'Attic',
     containsPictures: false,
-    type: ["outbox", "inbox", "drafts"],
+    type: ["inbox"],
     expiry: DateTime(
         DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
     quantity: 5.0,
@@ -196,13 +194,13 @@ final _outbox = <Email>[
 final _drafts = <Email>[
   InboxEmail(
     id: 12,
-    sender: 'Sandra Adams',
+    recipients: 'Sandra Adams',
     time: DateTime.now(),
-    subject: '(No subject)',
+    subject: 'Nespresso Vertuo Line Iced Coffee & Flavored Barista Variety Pack',
     message: 'Hey,\n\n'
         'Wanted to email and see what you thought of',
     avatar: '$_avatarsLocation/avatar_2.jpg',
-    recipients: 'Jeff',
+    sender: 'Bathroom',
     containsPictures: false,
     type: ["drafts"],
     expiry: DateTime(
@@ -227,7 +225,7 @@ Future<void> _deleteAppDir() async {
 }
 
 void main() async {
-  await _deleteAppDir();
+  // await _deleteAppDir();
   // await _deleteCacheDir();
   await Hive.initFlutter();
   Hive.registerAdapter(InboxTypeAdapter());
