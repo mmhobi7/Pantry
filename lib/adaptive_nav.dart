@@ -50,33 +50,25 @@ class _AdaptiveNavState extends State<AdaptiveNav> {
     final _navigationDestinations = <_Destination>[
       _Destination(
         type: MailboxPageType.inbox,
-        textLabel: localizations.replyInboxLabel,
-        icon: '$_iconAssetLocation/twotone_inbox.png',
+        textLabel: "Inventory",
+        icon: Icon(Icons.inventory) //checklist
       ),
       _Destination(
         type: MailboxPageType.starred,
         textLabel: localizations.replyStarredLabel,
-        icon: '$_iconAssetLocation/twotone_star.png',
+        icon: Icon(
+          Icons.star_border_outlined,
+        ),
       ),
       _Destination(
-        type: MailboxPageType.sent,
-        textLabel: localizations.replySentLabel,
-        icon: '$_iconAssetLocation/twotone_send.png',
+        type: MailboxPageType.drafts,
+        textLabel: "Shopping List",
+        icon: Icon(Icons.shopping_cart_outlined), //shopping_cart
       ),
       _Destination(
         type: MailboxPageType.trash,
         textLabel: localizations.replyTrashLabel,
-        icon: '$_iconAssetLocation/twotone_delete.png',
-      ),
-      _Destination(
-        type: MailboxPageType.spam,
-        textLabel: localizations.replySpamLabel,
-        icon: '$_iconAssetLocation/twotone_error.png',
-      ),
-      _Destination(
-        type: MailboxPageType.drafts,
-        textLabel: localizations.replyDraftsLabel,
-        icon: '$_iconAssetLocation/twotone_drafts.png',
+        icon: Icon(Icons.delete_outlined),
       ),
     ];
 
@@ -204,12 +196,8 @@ class _DesktopNavState extends State<_DesktopNav>
                                           'Reply-${destination.textLabel}',
                                         ),
                                         color: Colors.transparent,
-                                        child: ImageIcon(
-                                          AssetImage(
+                                        child:
                                             destination.icon,
-                                            package: _assetsPackage,
-                                          ),
-                                        ),
                                       ),
                                       label: Text(destination.textLabel),
                                     ),
@@ -966,11 +954,8 @@ class _BottomDrawerDestinations extends StatelessWidget {
             );
           },
           child: ListTile(
-            leading: ImageIcon(
-              AssetImage(
-                destination.icon,
-                package: _assetsPackage,
-              ),
+            leading: Icon(
+                destination.icon.icon,
               color: destination.type == selectedMailbox
                   ? theme.colorScheme.secondary
                   : theme.navigationRailTheme.unselectedLabelTextStyle.color,
@@ -1010,7 +995,7 @@ class _Destination {
   final String textLabel;
 
   // The icon that appears next to the text label for the inbox.
-  final String icon;
+  final Icon icon;
 }
 
 class _BottomDrawerFolderSection extends StatelessWidget {
