@@ -124,13 +124,15 @@ class EmailAdapter extends TypeAdapter<Email> {
       recipients: fields[6] as String,
       containsPictures: fields[7] as bool,
       type: (fields[8] as List)?.cast<String>(),
+      expiry: fields[9] as DateTime,
+      quantity: fields[10] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, Email obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -148,7 +150,11 @@ class EmailAdapter extends TypeAdapter<Email> {
       ..writeByte(7)
       ..write(obj.containsPictures)
       ..writeByte(8)
-      ..write(obj.type);
+      ..write(obj.type)
+      ..writeByte(9)
+      ..write(obj.expiry)
+      ..writeByte(10)
+      ..write(obj.quantity);
   }
 
   @override
@@ -182,13 +188,15 @@ class InboxEmailAdapter extends TypeAdapter<InboxEmail> {
       recipients: fields[6] as String,
       containsPictures: fields[7] as bool,
       type: (fields[8] as List)?.cast<String>(),
+      expiry: fields[9] as DateTime,
+      quantity: fields[10] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, InboxEmail obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -206,7 +214,11 @@ class InboxEmailAdapter extends TypeAdapter<InboxEmail> {
       ..writeByte(7)
       ..write(obj.containsPictures)
       ..writeByte(8)
-      ..write(obj.type);
+      ..write(obj.type)
+      ..writeByte(9)
+      ..write(obj.expiry)
+      ..writeByte(10)
+      ..write(obj.quantity);
   }
 
   @override

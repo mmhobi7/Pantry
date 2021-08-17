@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'adaptive.dart';
 import 'colors.dart';
+import 'constants.dart';
 import 'mail_view_page.dart';
 import 'model/email_model.dart';
 import 'model/email_store.dart';
@@ -215,8 +216,7 @@ class _MailPreview extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Text(
-                              '${email.sender} - ' +
-                                  Jiffy(email.time).fromNow(),
+                              '${email.sender} - ${Jiffy(email.time).fromNow()} - Expires ${Jiffy(email.expiry).fromNow()} ${removeTrailingZeros(email.quantity)}',
                               style: textTheme.caption,
                             ),
                             const SizedBox(height: 4),

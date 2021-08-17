@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import '../constants.dart';
 import 'email_model.dart';
 
 const _avatarsLocation = 'reply/avatars';
-const hiveDB = 'bruhb';
 
 class EmailStore with ChangeNotifier {
 

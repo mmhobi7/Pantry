@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'model/email_model.dart';
@@ -15,6 +16,8 @@ class ComposePageState extends StatefulWidget {
 
 class ComposePage extends State<ComposePageState> {
   String _location = "Not set yet";
+  DateTime _expiry;
+  double _qty;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +52,7 @@ class ComposePage extends State<ComposePageState> {
                   __AutocompleteLocation(
                       callback: (val) => setState(() => _location = val)),
                   const _SectionDivider(),
+                  _DetailRow(expiry: _expiry, qty:_qty),
                   _RecipientsRow(
                     recipients: _recipient,
                     avatar: _recipientAvatar,
@@ -77,7 +81,6 @@ class ComposePage extends State<ComposePageState> {
 }
 
 class _SubjectRow extends StatefulWidget {
-  //TODO this
   const _SubjectRow({@required this.subject, this.loc})
       : assert(subject != null);
 
@@ -177,6 +180,92 @@ class _SubjectRowState extends State<_SubjectRow> {
                 ));
                 Navigator.of(context).pop();
               },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DetailRow extends StatefulWidget {
+  const _DetailRow({this.qty, this.expiry});
+
+  final double qty;
+  final DateTime expiry;
+
+  @override
+  _DetailRowState createState() => _DetailRowState();
+}
+
+class _DetailRowState extends State<_DetailRow> {
+  TextEditingController _subjectController;
+  TextEditingController _quantityController;
+
+  @override
+  void initState() {
+    super.initState();
+    _subjectController = TextEditingController();
+    _quantityController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _subjectController.dispose();
+    _quantityController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final emailStore = Provider.of<EmailStore>(context);
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 16,bottom:24,left:16,right:16),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: TextField(
+              controller: _subjectController,
+              maxLines: 1,
+              autofocus: false,
+              style: theme.textTheme.headline6,
+              decoration: InputDecoration.collapsed(
+                hintText: 'Type',
+                hintStyle: theme.textTheme.headline6.copyWith(
+                  color: theme.colorScheme.primary.withOpacity(0.5),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: TextField(
+              controller: _quantityController,
+              maxLines: 1,
+              autofocus: false,
+              style: theme.textTheme.headline6,
+              keyboardType: TextInputType.numberWithOptions(
+                  decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                TextInputFormatter.withFunction((oldValue, newValue) {
+                  try {
+                    final text = newValue.text;
+                    if (text.isNotEmpty) double.parse(text);
+                    return newValue;
+                  } catch (e) {}
+                  return oldValue;
+                }),
+              ],
+              decoration: InputDecoration.collapsed(
+                hintText: 'Quantity',
+                hintStyle: theme.textTheme.headline6.copyWith(
+                  color: theme.colorScheme.primary.withOpacity(0.5),
+                ),
+              ),
             ),
           ),
         ],
