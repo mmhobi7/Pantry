@@ -49,10 +49,10 @@ class _AdaptiveNavState extends State<AdaptiveNav> {
     final localizations = GalleryLocalizations.of(context);
     final _navigationDestinations = <_Destination>[
       _Destination(
-        type: MailboxPageType.inbox,
-        textLabel: "Inventory",
-        icon: Icon(Icons.inventory) //checklist
-      ),
+          type: MailboxPageType.inbox,
+          textLabel: "Inventory",
+          icon: Icon(Icons.inventory) //checklist
+          ),
       _Destination(
         type: MailboxPageType.starred,
         textLabel: localizations.replyStarredLabel,
@@ -196,8 +196,7 @@ class _DesktopNavState extends State<_DesktopNav>
                                           'Reply-${destination.textLabel}',
                                         ),
                                         color: Colors.transparent,
-                                        child:
-                                            destination.icon,
+                                        child: destination.icon,
                                       ),
                                       label: Text(destination.textLabel),
                                     ),
@@ -281,6 +280,7 @@ class _NavigationRailHeader extends StatelessWidget {
                       },
                       child: Row(
                         children: [
+                          const SizedBox(width: 22),
                           Transform.rotate(
                             angle: animation.value * math.pi,
                             child: const Icon(
@@ -289,7 +289,7 @@ class _NavigationRailHeader extends StatelessWidget {
                               size: 16,
                             ),
                           ),
-                          const _ReplyLogo(),
+                          // const _ReplyLogo(),
                           const SizedBox(width: 10),
                           Align(
                             alignment: AlignmentDirectional.centerStart,
@@ -297,7 +297,7 @@ class _NavigationRailHeader extends StatelessWidget {
                             child: Opacity(
                               opacity: animation.value,
                               child: Text(
-                                'REPLY',
+                                'Inventory',
                                 style: textTheme.bodyText1.copyWith(
                                   color: ReplyColors.white50,
                                 ),
@@ -313,12 +313,7 @@ class _NavigationRailHeader extends StatelessWidget {
                         opacity: animation.value,
                         child: Row(
                           children: const [
-                            SizedBox(width: 18),
-                            ProfileAvatar(
-                              avatar: 'reply/avatars/avatar_2.jpg',
-                              radius: 16,
-                            ),
-                            SizedBox(width: 12),
+                            SizedBox(width: 50),
                             Icon(
                               Icons.settings,
                               color: ReplyColors.white50,
@@ -763,7 +758,7 @@ class _AnimatedBottomAppBar extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          const _ReplyLogo(),
+                          // const _ReplyLogo(),
                           const SizedBox(width: 10),
                           _FadeThroughTransitionSwitcher(
                             fillColor: Colors.transparent,
@@ -844,11 +839,8 @@ class _BottomAppBarActionItems extends StatelessWidget {
                       children: [
                         IconButton(
                           key: const ValueKey('star_email_button'),
-                          icon: ImageIcon(
-                            const AssetImage(
-                              '$_iconAssetLocation/twotone_star.png',
-                              package: _assetsPackage,
-                            ),
+                          icon: Icon(
+                            Icons.star_border_outlined,
                             color: starIconColor,
                           ),
                           onPressed: () {
@@ -867,12 +859,7 @@ class _BottomAppBarActionItems extends StatelessWidget {
                           color: ReplyColors.white50,
                         ),
                         IconButton(
-                          icon: const ImageIcon(
-                            AssetImage(
-                              '$_iconAssetLocation/twotone_delete.png',
-                              package: _assetsPackage,
-                            ),
-                          ),
+                          icon: const Icon(Icons.delete_outlined),
                           onPressed: () {
                             model.deleteEmail(
                               model.selectedEmailId,
@@ -955,7 +942,7 @@ class _BottomDrawerDestinations extends StatelessWidget {
           },
           child: ListTile(
             leading: Icon(
-                destination.icon.icon,
+              destination.icon.icon,
               color: destination.type == selectedMailbox
                   ? theme.colorScheme.secondary
                   : theme.navigationRailTheme.unselectedLabelTextStyle.color,
