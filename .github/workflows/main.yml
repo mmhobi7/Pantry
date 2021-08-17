@@ -27,7 +27,8 @@ jobs:
       with:
         flutter-version: '2.0.5'
     - run: flutter pub get
-    - run: flutter test
     - run: flutter build web
     - name: GitHub Pages v3
       uses: peaceiris/actions-gh-pages@v3
+      with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
