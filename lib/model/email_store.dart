@@ -96,9 +96,6 @@ class EmailStore with ChangeNotifier {
   }
 
   void addItem(InboxEmail item) {
-    // var last = userBox.values.where((email) => email.type.contains("outbox")).;
-    print("***REMOVED***");
-    print(item.subject);
     userBox.add(item);
   }
 
@@ -117,7 +114,6 @@ class EmailStore with ChangeNotifier {
 
   set selectedFolder(String value) {
     _selectedFolder = value;
-    print(value);
     notifyListeners();
   }
 

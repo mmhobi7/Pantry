@@ -233,7 +233,7 @@ class _DesktopNavState extends State<_DesktopNav>
                                 trailing: _NavigationRailFolderSection(
                                     folders: widget.folders,
                                     onFolderTapped: widget.onFolderTapped,
-                                selectedFolder: model.selectedFolder),
+                                    selectedFolder: model.selectedFolder),
                                 selectedIndex: selectedIndex,
                                 onDestinationSelected: (index) {
                                   widget.onItemTapped(
@@ -367,13 +367,12 @@ class _NavigationRailHeader extends StatelessWidget {
 
 class _NavigationRailFolderSection extends StatelessWidget {
   const _NavigationRailFolderSection(
-      {@required this.folders, @required this.onFolderTapped,
+      {@required this.folders,
+      @required this.onFolderTapped,
       @required this.selectedFolder})
-
-  : assert(folders != null),
+      : assert(folders != null),
         assert(onFolderTapped != null),
         assert(selectedFolder != null);
-
 
   final List<String> folders;
   final String selectedFolder;
@@ -431,7 +430,6 @@ class _NavigationRailFolderSection extends StatelessWidget {
                           Radius.circular(36),
                         ),
                         onTap: () {
-                          print("tapped f");
                           onFolderTapped(folder);
                         },
                         child: Column(
@@ -443,7 +441,8 @@ class _NavigationRailFolderSection extends StatelessWidget {
                                   Icons.folder_outlined,
                                   color: folder == selectedFolder
                                       ? theme.colorScheme.secondary
-                                      : theme.navigationRailTheme.unselectedLabelTextStyle.color,
+                                      : theme.navigationRailTheme
+                                          .unselectedLabelTextStyle.color,
                                 ),
                                 const SizedBox(width: 24),
                                 Text(
@@ -451,8 +450,8 @@ class _NavigationRailFolderSection extends StatelessWidget {
                                   style: textTheme.bodyText1.copyWith(
                                     color: folder == selectedFolder
                                         ? theme.colorScheme.secondary
-                                        : theme
-                                        .navigationRailTheme.unselectedLabelTextStyle.color,
+                                        : theme.navigationRailTheme
+                                            .unselectedLabelTextStyle.color,
                                   ),
                                 ),
                                 const SizedBox(height: 72),
@@ -1053,7 +1052,6 @@ class _BottomDrawerFolderSection extends StatelessWidget {
         for (var folder in folders)
           InkWell(
             onTap: () {
-              print("tapped folder");
               onFolderTapped(folder);
             },
             child: ListTile(

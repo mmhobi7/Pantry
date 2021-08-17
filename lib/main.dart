@@ -22,7 +22,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["inbox"],
-    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    expiry: DateTime(
+        DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
     quantity: 20,
   ),
   InboxEmail(
@@ -39,7 +40,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["inbox"],
-    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    expiry: DateTime(
+        DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
     quantity: 8.2,
   ),
   InboxEmail(
@@ -52,7 +54,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: true,
     type: ["inbox"],
-    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    expiry: DateTime(
+        DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
     quantity: 1.2,
   ),
   InboxEmail(
@@ -72,7 +75,8 @@ final _inbox = <Email>[
     recipients: 'Allison, Kim, Jeff',
     containsPictures: false,
     type: ["inbox"],
-    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    expiry: DateTime(
+        DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
     quantity: 0,
   ),
   InboxEmail(
@@ -85,7 +89,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["inbox"],
-    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    expiry: DateTime(
+        DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
     quantity: 1.98,
   ),
   InboxEmail(
@@ -98,7 +103,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["inbox"],
-    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    expiry: DateTime(
+        DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
     quantity: 9.0,
   ),
   InboxEmail(
@@ -113,7 +119,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["inbox"],
-    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    expiry: DateTime(
+        DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
     quantity: 5.4,
   ),
   InboxEmail(
@@ -128,7 +135,8 @@ final _inbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["inbox"],
-    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day+3),
+    expiry: DateTime(
+        DateTime.now().year, DateTime.now().month + 1, DateTime.now().day + 3),
     quantity: 5.0,
   ),
   InboxEmail(
@@ -143,7 +151,8 @@ final _inbox = <Email>[
     containsPictures: false,
     type: ["inbox"],
     inboxType: InboxType.spam,
-    expiry: DateTime(DateTime.now().year, DateTime.now().month + 2, DateTime.now().day),
+    expiry: DateTime(
+        DateTime.now().year, DateTime.now().month + 2, DateTime.now().day),
     quantity: 5.0,
   ),
 ];
@@ -162,7 +171,8 @@ final _outbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["outbox"],
-    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    expiry: DateTime(
+        DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
     quantity: 5.0,
   ),
   InboxEmail(
@@ -177,7 +187,8 @@ final _outbox = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["outbox", "inbox", "drafts"],
-    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    expiry: DateTime(
+        DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
     quantity: 5.0,
   ),
 ];
@@ -194,7 +205,8 @@ final _drafts = <Email>[
     recipients: 'Jeff',
     containsPictures: false,
     type: ["drafts"],
-    expiry: DateTime(DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
+    expiry: DateTime(
+        DateTime.now().year, DateTime.now().month + 1, DateTime.now().day),
     quantity: 5.0,
   ),
 ];
@@ -209,7 +221,6 @@ Future<void> _deleteCacheDir() async {
 
 Future<void> _deleteAppDir() async {
   final appDir = await getApplicationSupportDirectory();
-  print(appDir);
   if (appDir.existsSync()) {
     appDir.deleteSync(recursive: true);
   }
