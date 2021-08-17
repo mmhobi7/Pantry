@@ -71,15 +71,6 @@ class _AdaptiveNavState extends State<AdaptiveNav> {
     final emailStore = Provider.of<EmailStore>(context);
     final _folders = emailStore.getLocs();
 
-    // final _folders = {
-    //   'Receipts',
-    //   'Pine Elementary',
-    //   'Taxes',
-    //   'Vacation',
-    //   'Mortgage',
-    //   'Freelance',
-    // };
-
     if (isDesktop) {
       return _DesktopNav(
         inboxKey: _inboxKey,
@@ -87,6 +78,7 @@ class _AdaptiveNavState extends State<AdaptiveNav> {
         destinations: _navigationDestinations,
         folders: _folders,
         onItemTapped: _onDestinationSelected,
+        onFolderTapped: _onFolderTapped,
       );
     } else {
       return _MobileNav(
@@ -94,6 +86,7 @@ class _AdaptiveNavState extends State<AdaptiveNav> {
         destinations: _navigationDestinations,
         folders: _folders,
         onItemTapped: _onDestinationSelected,
+        onFolderTapped: _onFolderTapped,
       );
     }
   }
@@ -111,6 +104,36 @@ class _AdaptiveNavState extends State<AdaptiveNav> {
     }
 
     emailStore.selectedMailboxPage = destination;
+    emailStore.selectedFolder = "";
+
+    if (isDesktop) {
+      while (desktopMailNavKey.currentState.canPop()) {
+        desktopMailNavKey.currentState.pop();
+      }
+    }
+
+    if (emailStore.onMailView) {
+      if (!isDesktop) {
+        mobileMailNavKey.currentState.pop();
+      }
+
+      emailStore.selectedEmailId = -1;
+    }
+  }
+
+  void _onFolderTapped(String loc) {
+    var emailStore = Provider.of<EmailStore>(
+      context,
+      listen: false,
+    );
+
+    final isDesktop = isDisplayDesktop(context);
+
+    if (emailStore.selectedFolder != loc) {
+      _inboxKey = UniqueKey();
+    }
+
+    emailStore.selectedFolder = loc;
 
     if (isDesktop) {
       while (desktopMailNavKey.currentState.canPop()) {
@@ -137,6 +160,7 @@ class _DesktopNav extends StatefulWidget {
     this.destinations,
     this.folders,
     this.onItemTapped,
+    this.onFolderTapped,
   }) : super(key: key);
 
   final bool extended;
@@ -145,6 +169,7 @@ class _DesktopNav extends StatefulWidget {
   final List<_Destination> destinations;
   final List<String> folders;
   final void Function(int, MailboxPageType) onItemTapped;
+  final void Function(String) onFolderTapped;
 
   @override
   _DesktopNavState createState() => _DesktopNavState();
@@ -206,8 +231,9 @@ class _DesktopNavState extends State<_DesktopNav>
                                   extended: _isExtended,
                                 ),
                                 trailing: _NavigationRailFolderSection(
-                                  folders: widget.folders,
-                                ),
+                                    folders: widget.folders,
+                                    onFolderTapped: widget.onFolderTapped,
+                                selectedFolder: model.selectedFolder),
                                 selectedIndex: selectedIndex,
                                 onDestinationSelected: (index) {
                                   widget.onItemTapped(
@@ -340,10 +366,18 @@ class _NavigationRailHeader extends StatelessWidget {
 }
 
 class _NavigationRailFolderSection extends StatelessWidget {
-  const _NavigationRailFolderSection({@required this.folders})
-      : assert(folders != null);
+  const _NavigationRailFolderSection(
+      {@required this.folders, @required this.onFolderTapped,
+      @required this.selectedFolder})
+
+  : assert(folders != null),
+        assert(onFolderTapped != null),
+        assert(selectedFolder != null);
+
 
   final List<String> folders;
+  final String selectedFolder;
+  final void Function(String) onFolderTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -396,7 +430,10 @@ class _NavigationRailFolderSection extends StatelessWidget {
                         borderRadius: const BorderRadius.all(
                           Radius.circular(36),
                         ),
-                        onTap: () {},
+                        onTap: () {
+                          print("tapped f");
+                          onFolderTapped(folder);
+                        },
                         child: Column(
                           children: [
                             Row(
@@ -404,15 +441,18 @@ class _NavigationRailFolderSection extends StatelessWidget {
                                 const SizedBox(width: 12),
                                 Icon(
                                   Icons.folder_outlined,
-                                  color: navigationRailTheme
-                                      .unselectedLabelTextStyle.color,
+                                  color: folder == selectedFolder
+                                      ? theme.colorScheme.secondary
+                                      : theme.navigationRailTheme.unselectedLabelTextStyle.color,
                                 ),
                                 const SizedBox(width: 24),
                                 Text(
                                   folder,
                                   style: textTheme.bodyText1.copyWith(
-                                    color: navigationRailTheme
-                                        .unselectedLabelTextStyle.color,
+                                    color: folder == selectedFolder
+                                        ? theme.colorScheme.secondary
+                                        : theme
+                                        .navigationRailTheme.unselectedLabelTextStyle.color,
                                   ),
                                 ),
                                 const SizedBox(height: 72),
@@ -438,12 +478,14 @@ class _MobileNav extends StatefulWidget {
     this.destinations,
     this.folders,
     this.onItemTapped,
+    this.onFolderTapped,
   });
 
   final UniqueKey inboxKey;
   final List<_Destination> destinations;
   final List<String> folders;
   final void Function(int, MailboxPageType) onItemTapped;
+  final void Function(String) onFolderTapped;
 
   @override
   _MobileNavState createState() => _MobileNavState();
@@ -647,7 +689,14 @@ class _MobileNavState extends State<_MobileNav> with TickerProviderStateMixin {
                   );
                 },
               ),
-              trailing: _BottomDrawerFolderSection(folders: widget.folders),
+              trailing: Consumer<EmailStore>(
+                builder: (context, model, child) {
+                  return _BottomDrawerFolderSection(
+                      folders: widget.folders,
+                      onFolderTapped: widget.onFolderTapped,
+                      selectedFolder: model.selectedFolder);
+                },
+              ),
             ),
           ),
         ),
@@ -982,10 +1031,17 @@ class _Destination {
 }
 
 class _BottomDrawerFolderSection extends StatelessWidget {
-  const _BottomDrawerFolderSection({@required this.folders})
-      : assert(folders != null);
+  const _BottomDrawerFolderSection(
+      {@required this.folders,
+      @required this.onFolderTapped,
+      @required this.selectedFolder})
+      : assert(folders != null),
+        assert(onFolderTapped != null),
+        assert(selectedFolder != null);
 
   final List<String> folders;
+  final String selectedFolder;
+  final void Function(String) onFolderTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -996,16 +1052,24 @@ class _BottomDrawerFolderSection extends StatelessWidget {
       children: [
         for (var folder in folders)
           InkWell(
-            onTap: () {},
+            onTap: () {
+              print("tapped folder");
+              onFolderTapped(folder);
+            },
             child: ListTile(
               leading: Icon(
                 Icons.folder_outlined,
-                color: navigationRailTheme.unselectedLabelTextStyle.color,
+                color: folder == selectedFolder
+                    ? theme.colorScheme.secondary
+                    : theme.navigationRailTheme.unselectedLabelTextStyle.color,
               ),
               title: Text(
                 folder,
                 style: theme.textTheme.bodyText2.copyWith(
-                  color: navigationRailTheme.unselectedLabelTextStyle.color,
+                  color: folder == selectedFolder
+                      ? theme.colorScheme.secondary
+                      : theme
+                          .navigationRailTheme.unselectedLabelTextStyle.color,
                 ),
               ),
             ),

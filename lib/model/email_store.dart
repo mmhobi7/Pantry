@@ -1,18 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 import '../constants.dart';
 import 'email_model.dart';
 
-const _avatarsLocation = 'reply/avatars';
-
 class EmailStore with ChangeNotifier {
-
   Box<Email> userBox = Hive.box(hiveDB);
   Iterable<Email> _inbox;
   Iterable<Email> _outbox;
   Iterable<Email> _drafts;
-
 
   List<Email> get _allEmails {
     _inbox = userBox.values.where((email) => email.type.contains("inbox"));
@@ -27,12 +24,10 @@ class EmailStore with ChangeNotifier {
 
   List<Email> get inboxEmails {
     _inbox = userBox.values.where((email) => email.type.contains("inbox"));
-    return _inbox.where((email) {
-      if (email is InboxEmail) {
-        return email.inboxType == InboxType.normal;
-      }
-      return false;
-    }).toList();
+    if (_selectedFolder != "") {
+      _inbox = _inbox.where((email) => email.sender.contains(_selectedFolder));
+    }
+    return _inbox.where((email) => !email.type.contains("trash")).toList();
   }
 
   List<Email> get spamEmails {
@@ -40,7 +35,7 @@ class EmailStore with ChangeNotifier {
     return _inbox.where((email) {
       if (email is InboxEmail) {
         return email.inboxType == InboxType.spam &&
-            !trashEmailIds.contains(email.id);
+            !email.type.contains("trash");
       }
       return false;
     }).toList();
@@ -51,48 +46,52 @@ class EmailStore with ChangeNotifier {
 
   List<Email> get outboxEmails {
     _outbox = userBox.values.where((email) => email.type.contains("outbox"));
-    return _outbox.where((email) => !trashEmailIds.contains(email.id)).toList();
+    if (_selectedFolder != "") {
+      _outbox =
+          _outbox.where((email) => email.sender.contains(_selectedFolder));
+    }
+    return _outbox.where((email) => !email.type.contains("trash")).toList();
   }
 
   List<Email> get draftEmails {
     _drafts = userBox.values.where((email) => email.type.contains("drafts"));
-    return _drafts.where((email) => !trashEmailIds.contains(email.id)).toList();
+    if (_selectedFolder != "") {
+      _drafts =
+          _drafts.where((email) => email.sender.contains(_selectedFolder));
+    }
+    return _drafts.where((email) => !email.type.contains("trash")).toList();
   }
 
-  Set<int> starredEmailIds = {};
+  bool isEmailStarred(int id) {
+    return _allEmails
+        .any((email) => email.id == id && email.type.contains("star"));
+  }
 
-  bool isEmailStarred(int id) =>
-      _allEmails.any((email) => email.id == id && starredEmailIds.contains(id));
-
-  bool get isCurrentEmailStarred => starredEmailIds.contains(currentEmail.id);
+  bool get isCurrentEmailStarred => currentEmail.type.contains("star");
 
   List<Email> get starredEmails {
     return _allEmails
-        .where((email) => starredEmailIds.contains(email.id))
+        .where((email) =>
+            email.type.contains("star") && !email.type.contains("trash"))
         .toList();
   }
 
   void starEmail(int id) {
-    starredEmailIds.add(id);
+    _allEmails.firstWhere((email) => email.id == id).type.add("star");
     notifyListeners();
   }
 
   void unstarEmail(int id) {
-    starredEmailIds.remove(id);
+    _allEmails.firstWhere((email) => email.id == id).type.remove("star");
     notifyListeners();
   }
 
-  Set<int> trashEmailIds = {7, 8};
-
   List<Email> get trashEmails {
-    return _allEmails
-        .where((email) => trashEmailIds.contains(email.id))
-        .toList();
+    return _allEmails.where((email) => email.type.contains("trash")).toList();
   }
 
   void deleteEmail(int id) {
-    // trashEmailIds.add(id);
-    userBox.delete(id);
+    _allEmails.firstWhere((email) => email.id == id).type.add("trash");
     notifyListeners();
   }
 
@@ -109,6 +108,16 @@ class EmailStore with ChangeNotifier {
 
   set selectedEmailId(int value) {
     _selectedEmailId = value;
+    notifyListeners();
+  }
+
+  String _selectedFolder = "";
+
+  String get selectedFolder => _selectedFolder;
+
+  set selectedFolder(String value) {
+    _selectedFolder = value;
+    print(value);
     notifyListeners();
   }
 
@@ -134,12 +143,12 @@ class EmailStore with ChangeNotifier {
 
   List<String> getLocs() {
     List<String> locations = [];
-    userBox.values.forEach((email) { //TODO: optimize
+    userBox.values.forEach((email) {
+      //TODO: optimize
       if (!locations.contains(email.sender)) {
         locations.add(email.sender);
       }
     });
-    print(locations);
     return locations;
   }
 }
