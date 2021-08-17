@@ -157,12 +157,9 @@ class _SubjectRowState extends State<_SubjectRow> {
               Navigator.of(context).pop();
             },
             icon: IconButton(
-              icon: ImageIcon(
-                const AssetImage(
-                  'reply/icons/twotone_send.png',
-                  package: 'flutter_gallery_assets',
-                ),
+              icon: Icon(Icons.send,
                 color: colorScheme.onSurface,
+                size: 12.0,
               ),
               onPressed: () {
                 emailStore.addItem(InboxEmail(

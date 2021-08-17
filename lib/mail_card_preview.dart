@@ -11,9 +11,6 @@ import 'model/email_model.dart';
 import 'model/email_store.dart';
 import 'profile_avatar.dart';
 
-const _assetsPackage = 'flutter_gallery_assets';
-const _iconAssetLocation = 'reply/icons';
-
 class MailPreviewCard extends StatelessWidget {
   const MailPreviewCard({
     Key key,
@@ -85,7 +82,7 @@ class MailPreviewCard extends StatelessWidget {
               }
             },
             background: _DismissibleContainer(
-              icon: 'twotone_delete',
+              icon: Icons.delete_outlined,
               backgroundColor: colorScheme.primary,
               iconColor: ReplyColors.blue50,
               alignment: Alignment.centerLeft,
@@ -103,7 +100,7 @@ class MailPreviewCard extends StatelessWidget {
               }
             },
             secondaryBackground: _DismissibleContainer(
-              icon: 'twotone_star',
+              icon: Icons.star_outlined,
               backgroundColor: isStarred
                   ? colorScheme.secondary
                   : theme.scaffoldBackgroundColor,
@@ -134,7 +131,7 @@ class _DismissibleContainer extends StatelessWidget {
         assert(alignment != null),
         assert(padding != null);
 
-  final String icon;
+  final IconData icon;
   final Color backgroundColor;
   final Color iconColor;
   final Alignment alignment;
@@ -150,11 +147,8 @@ class _DismissibleContainer extends StatelessWidget {
       padding: padding,
       child: Material(
         color: Colors.transparent,
-        child: ImageIcon(
-          AssetImage(
-            'reply/icons/$icon.png',
-            package: 'flutter_gallery_assets',
-          ),
+        child: Icon(
+          icon,
           size: 36,
           color: iconColor,
         ),
@@ -315,21 +309,15 @@ class _MailPreviewActionBar extends StatelessWidget {
       children: [
         if (isDesktop) ...[
           IconButton(
-            icon: ImageIcon(
-              const AssetImage(
-                '$_iconAssetLocation/twotone_star.png',
-                package: _assetsPackage,
-              ),
+            icon: Icon(
+              Icons.star_outlined,
               color: starredIconColor,
             ),
             onPressed: onStar,
           ),
           IconButton(
-            icon: ImageIcon(
-              const AssetImage(
-                '$_iconAssetLocation/twotone_delete.png',
-                package: _assetsPackage,
-              ),
+            icon: Icon(
+              Icons.delete_outlined,
               color: color,
             ),
             onPressed: onDelete,

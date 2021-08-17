@@ -15,13 +15,10 @@ import 'compose_page.dart';
 import 'mailbox_body.dart';
 import 'model/email_model.dart';
 import 'model/email_store.dart';
-import 'profile_avatar.dart';
 import 'search_page.dart';
 import 'waterfall_notched_rectangle.dart';
 
 const _assetsPackage = 'flutter_gallery_assets';
-const _iconAssetLocation = 'reply/icons';
-const _folderIconAssetLocation = '$_iconAssetLocation/twotone_folder.png';
 final desktopMailNavKey = GlobalKey<NavigatorState>();
 final mobileMailNavKey = GlobalKey<NavigatorState>();
 const double _kFlingVelocity = 2.0;
@@ -71,15 +68,17 @@ class _AdaptiveNavState extends State<AdaptiveNav> {
         icon: Icon(Icons.delete_outlined),
       ),
     ];
+    final emailStore = Provider.of<EmailStore>(context);
+    final _folders = emailStore.getLocs();
 
-    final _folders = <String, String>{
-      'Receipts': _folderIconAssetLocation,
-      'Pine Elementary': _folderIconAssetLocation,
-      'Taxes': _folderIconAssetLocation,
-      'Vacation': _folderIconAssetLocation,
-      'Mortgage': _folderIconAssetLocation,
-      'Freelance': _folderIconAssetLocation,
-    };
+    // final _folders = {
+    //   'Receipts',
+    //   'Pine Elementary',
+    //   'Taxes',
+    //   'Vacation',
+    //   'Mortgage',
+    //   'Freelance',
+    // };
 
     if (isDesktop) {
       return _DesktopNav(
@@ -144,7 +143,7 @@ class _DesktopNav extends StatefulWidget {
   final UniqueKey inboxKey;
   final String currentInbox;
   final List<_Destination> destinations;
-  final Map<String, String> folders;
+  final List<String> folders;
   final void Function(int, MailboxPageType) onItemTapped;
 
   @override
@@ -344,7 +343,7 @@ class _NavigationRailFolderSection extends StatelessWidget {
   const _NavigationRailFolderSection({@required this.folders})
       : assert(folders != null);
 
-  final Map<String, String> folders;
+  final List<String> folders;
 
   @override
   Widget build(BuildContext context) {
@@ -392,7 +391,7 @@ class _NavigationRailFolderSection extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    for (var folder in folders.keys)
+                    for (var folder in folders)
                       InkWell(
                         borderRadius: const BorderRadius.all(
                           Radius.circular(36),
@@ -403,11 +402,8 @@ class _NavigationRailFolderSection extends StatelessWidget {
                             Row(
                               children: [
                                 const SizedBox(width: 12),
-                                ImageIcon(
-                                  AssetImage(
-                                    folders[folder],
-                                    package: _assetsPackage,
-                                  ),
+                                Icon(
+                                  Icons.folder_outlined,
                                   color: navigationRailTheme
                                       .unselectedLabelTextStyle.color,
                                 ),
@@ -446,7 +442,7 @@ class _MobileNav extends StatefulWidget {
 
   final UniqueKey inboxKey;
   final List<_Destination> destinations;
-  final Map<String, String> folders;
+  final List<String> folders;
   final void Function(int, MailboxPageType) onItemTapped;
 
   @override
@@ -989,7 +985,7 @@ class _BottomDrawerFolderSection extends StatelessWidget {
   const _BottomDrawerFolderSection({@required this.folders})
       : assert(folders != null);
 
-  final Map<String, String> folders;
+  final List<String> folders;
 
   @override
   Widget build(BuildContext context) {
@@ -998,15 +994,12 @@ class _BottomDrawerFolderSection extends StatelessWidget {
 
     return Column(
       children: [
-        for (var folder in folders.keys)
+        for (var folder in folders)
           InkWell(
             onTap: () {},
             child: ListTile(
-              leading: ImageIcon(
-                AssetImage(
-                  folders[folder],
-                  package: _assetsPackage,
-                ),
+              leading: Icon(
+                Icons.folder_outlined,
                 color: navigationRailTheme.unselectedLabelTextStyle.color,
               ),
               title: Text(
@@ -1141,7 +1134,7 @@ class _ReplyFabState extends State<_ReplyFab>
                   color: Colors.black,
                 ),
         );
-        final tooltip = onMailView ? 'Edit' : 'Add Item';
+        final tooltip = onMailView ? 'Edit' : 'Add';
 
         if (isDesktop) {
           final animation = NavigationRail.extendedAnimation(context);
